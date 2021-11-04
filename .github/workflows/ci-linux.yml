@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Setup Alire
+      uses: alire-project/setup-alire@v1
+
     - name: Checkout
       uses: actions/checkout@v2
 
@@ -21,4 +24,4 @@ jobs:
         sudo apt-get install gnat gprbuild
 
     - name: Build
-      run: gprbuild -j0 -p
+      run: alr build
