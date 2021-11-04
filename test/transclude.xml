@@ -1,0 +1,7 @@
+<Page title="Page with transclude">
+	<Content>
+		Hello world:
+
+      <Fragment source="test/transclude.adb" />
+	</Content>
+</Page>
