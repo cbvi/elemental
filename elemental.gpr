@@ -1,4 +1,4 @@
-with "config/elemental_config.gpr";
+with "xmlada";
 project Elemental is
 
    for Source_Dirs use ("src");
