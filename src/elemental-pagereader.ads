@@ -29,4 +29,7 @@ package Elemental.PageReader is
        NS         : Sax.Utils.XML_NS;
        Local_Name : Sax.Symbols.Symbol);
 
+   procedure End_Document
+      (Handler    : in out Reader);
+
 end Elemental.PageReader;

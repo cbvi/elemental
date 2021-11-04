@@ -40,6 +40,13 @@ package body Elemental.PageReader is
       null;
    end End_Element;
 
+   procedure End_Document
+      (Handler    : in out Reader)
+   is
+   begin
+      Ada.Text_IO.Unbounded_IO.Put_Line (Handler.Page.Content);
+   end End_Document;
+
    begin
       null;
 end Elemental.PageReader;

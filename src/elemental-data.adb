@@ -37,7 +37,6 @@ package body Elemental.Data is
       Index := Sax.Readers.Get_Index (Handler, Atts, "", "source");
       Name := UB.To_Unbounded_String
          (Sax.Symbols.Get (Sax.Readers.Get_Value (Atts, Index)).all);
-      Ada.Text_IO.Unbounded_IO.Put_Line (Name);
       WO.Open (File, WO.In_File, UB.To_String (Name), "WCEM=8");
       loop
          begin
@@ -45,10 +44,11 @@ package body Elemental.Data is
             UB.Append (Dat, Line);
             UB.Append (Dat, Ada.Characters.Latin_1.LF);
          exception
-            when EI.End_Error => exit;
+            when EI.End_Error =>
+               WO.Close (File);
+               exit;
          end;
       end loop;
       UB.Append (Handler.Page.Content, Dat);
-      Ada.Text_IO.Unbounded_IO.Put_Line (Handler.Page.Content);
    end Process_Fragment;
 end Elemental.Data;
