@@ -28,7 +28,7 @@ package body Elemental.PageReader is
        Ch         : Unicode.CES.Byte_Sequence)
    is
    begin
-      null;
+      UB.Append (Handler.Page.Content, Ch);
    end Characters;
 
    procedure End_Element

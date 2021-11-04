@@ -49,6 +49,7 @@ package body Elemental.Data is
             when EI.End_Error => exit;
          end;
       end loop;
-      Ada.Text_IO.Unbounded_IO.Put_Line (Dat);
+      UB.Append (Handler.Page.Content, Dat);
+      Ada.Text_IO.Unbounded_IO.Put_Line (Handler.Page.Content);
    end Process_Fragment;
 end Elemental.Data;
