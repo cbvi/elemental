@@ -1,4 +1,4 @@
-name: Ada (GNAT)
+name: Ada with Alire
 
 on:
   push:
@@ -12,16 +12,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Setup Alire
-      uses: alire-project/setup-alire@v1
-
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Set up GNAT toolchain
-      run: >
-        sudo apt-get update && 
-        sudo apt-get install gnat gprbuild
+    - name: Toolchain
+      uses: ada-actions/toolchain@ce2020
+
+    - name: Setup Alire
+      uses: alire-project/setup-alire@v1
 
     - name: Build
       run: alr build
