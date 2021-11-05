@@ -15,7 +15,6 @@ package body Elemental.PageReader is
    begin
       if Local_Name = "Page" then
          Handler.Page.Title := Elemental.Data.Get_Title (Handler, Atts); 
-         Ada.Text_IO.Unbounded_IO.Put_Line (Handler.Page.Title);
       elsif Local_Name = "Content" then
          Handler.In_Content := True;
       elsif Local_Name = "Fragment" then
@@ -43,8 +42,10 @@ package body Elemental.PageReader is
    procedure End_Document
       (Handler    : in out Reader)
    is
+      Html : UB.Unbounded_String;
    begin
-      Ada.Text_IO.Unbounded_IO.Put_Line (Handler.Page.Content);
+      Html := Elemental.Page.To_Html (Handler.Page);
+      Ada.Text_IO.Unbounded_IO.Put_Line (Html);
    end End_Document;
 
    begin

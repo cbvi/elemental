@@ -8,4 +8,6 @@ package Elemental.Page is
       Title    : UB.Unbounded_String;
       Content  : UB.Unbounded_String;
    end record;
+
+   function To_Html (Page : Elemental.Page.Page) return UB.Unbounded_String;
 end Elemental.Page;
