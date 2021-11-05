@@ -1,0 +1,7 @@
+<Page title="Page with mixed content and transclusions">
+	<Content>
+      😅
+
+      <Fragment source="test/unicode.txt" />
+	</Content>
+</Page>
