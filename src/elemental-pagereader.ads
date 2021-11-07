@@ -14,21 +14,25 @@ package Elemental.PageReader is
       Page        : Elemental.Page.Page;
    end record;
 
+   overriding
    procedure Start_Element
       (Handler    : in out Reader;
        NS         : Sax.Utils.XML_NS;
        Local_Name : Sax.Symbols.Symbol;
        Atts       : Sax.Readers.Sax_Attribute_List);
 
+   overriding
    procedure Characters
       (Handler    : in out Reader;
        Ch         : Unicode.CES.Byte_Sequence);
 
+   overriding
    procedure End_Element
       (Handler    : in out Reader;
        NS         : Sax.Utils.XML_NS;
        Local_Name : Sax.Symbols.Symbol);
 
+   overriding
    procedure End_Document
       (Handler    : in out Reader);
 

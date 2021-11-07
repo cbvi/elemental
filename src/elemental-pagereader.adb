@@ -1,11 +1,11 @@
 with Sax.Symbols; use Sax.Symbols;
 with Sax.Attributes;
-with Sax.Readers;
 with Ada.Text_IO;
 with Elemental.Data;
 with Ada.Text_IO.Unbounded_IO;
 
 package body Elemental.PageReader is
+   overriding
    procedure Start_Element
       (Handler    : in out Reader;
        NS         : Sax.Utils.XML_NS;
@@ -14,7 +14,7 @@ package body Elemental.PageReader is
    is
    begin
       if Local_Name = "Page" then
-         Handler.Page.Title := Elemental.Data.Get_Title (Handler, Atts); 
+         Handler.Page.Title := Elemental.Data.Get_Title (Handler, Atts);
       elsif Local_Name = "Content" then
          Handler.In_Content := True;
       elsif Local_Name = "Fragment" then
@@ -22,6 +22,7 @@ package body Elemental.PageReader is
       end if;
    end Start_Element;
 
+   overriding
    procedure Characters
       (Handler    : in out Reader;
        Ch         : Unicode.CES.Byte_Sequence)
@@ -33,6 +34,7 @@ package body Elemental.PageReader is
       Handler.Page.Fragments.Append (Fragment);
    end Characters;
 
+   overriding
    procedure End_Element
       (Handler    : in out Reader;
        NS         : Sax.Utils.XML_NS;
@@ -42,6 +44,7 @@ package body Elemental.PageReader is
       null;
    end End_Element;
 
+   overriding
    procedure End_Document
       (Handler    : in out Reader)
    is
@@ -51,6 +54,6 @@ package body Elemental.PageReader is
       Ada.Text_IO.Unbounded_IO.Put_Line (Html);
    end End_Document;
 
-   begin
+begin
       null;
 end Elemental.PageReader;

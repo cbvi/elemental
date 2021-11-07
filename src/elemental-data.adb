@@ -1,7 +1,5 @@
-with Sax.Readers;
 with Sax.Symbols;
 with Sax.Attributes;
-with Elemental.PageReader;
 with Ada.Text_IO.Unbounded_IO;
 with Ada.Text_IO;
 with Ada.IO_Exceptions;

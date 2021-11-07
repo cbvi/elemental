@@ -25,7 +25,12 @@ package Elemental.Page is
       Fragments   : Fragment_Vector.Vector;
    end record;
 
-   function To_Html (Page : Elemental.Page.Page) return UB.Unbounded_String;
+   function To_Html
+      (Page : Elemental.Page.Page) return UB.Unbounded_String;
 
-   function Fragment_To_String (Frag : Fragment) return UB.Unbounded_String;
+   function Fragment_To_String
+      (Frag : Fragment) return UB.Unbounded_String;
+
+   function Get_External_Fragment
+      (Frag : Fragment) return UB.Unbounded_String;
 end Elemental.Page;

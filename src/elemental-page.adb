@@ -1,4 +1,3 @@
-with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Ada.Text_IO.Unbounded_IO;
 with Ada.IO_Exceptions;
@@ -34,6 +33,15 @@ package body Elemental.Page is
 
    function Fragment_To_String (Frag : Fragment) return UB.Unbounded_String
    is
+   begin
+      case Frag.What is
+         when Raw => return Frag.Content;
+         when others => return Get_External_Fragment (Frag);
+      end case;
+   end Fragment_To_String;
+
+   function Get_External_Fragment (Frag : Fragment) return UB.Unbounded_String
+   is
       File     : IO.File_Type;
       Line     : UB.Unbounded_String := UB.Null_Unbounded_String;
       Result   : UB.Unbounded_String := UB.Null_Unbounded_String;
@@ -53,5 +61,5 @@ package body Elemental.Page is
       end loop;
       IO.Close (File);
       return Result;
-   end Fragment_To_String;
+   end Get_External_Fragment;
 end Elemental.Page;
