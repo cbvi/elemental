@@ -46,9 +46,6 @@ package body Elemental.Page is
       Line     : UB.Unbounded_String := UB.Null_Unbounded_String;
       Result   : UB.Unbounded_String := UB.Null_Unbounded_String;
    begin
-      if Frag.What = Raw then
-         return Frag.Content;
-      end if;
       IO.Open (File, IO.In_File, UB.To_String (Frag.Source), "WCEM=8");
       loop
          begin
