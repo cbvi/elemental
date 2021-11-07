@@ -32,7 +32,7 @@ package body Elemental.Data is
    is
       Index    : Integer;
       Name     : UB.Unbounded_String;
-      Fragment : Elemental.Page.Fragment;
+      Fragment : Elemental.Page.Fragment (Elemental.Page.Text);
    begin
       Index := Sax.Readers.Get_Index (Handler, Atts, "", "source");
       Name := UB.To_Unbounded_String
