@@ -29,7 +29,8 @@ package body Elemental.PageReader is
    is
       Fragment    : Elemental.Page.Fragment (Elemental.Page.Raw);
    begin
-      Fragment.Content := UB.To_Unbounded_String (Ch);
+      Fragment.Content :=
+         UB.Trim (UB.To_Unbounded_String (Ch), Ada.Strings.Both);
 
       Handler.Page.Fragments.Append (Fragment);
    end Characters;

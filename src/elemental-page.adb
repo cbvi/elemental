@@ -28,6 +28,7 @@ package body Elemental.Page is
       end loop;
 
       UB.Append (Buffer, "</body></html>");
+      UB.Append (Buffer, Ada.Characters.Latin_1.LF);
       return Buffer;
    end To_Html;
 

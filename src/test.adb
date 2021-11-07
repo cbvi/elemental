@@ -2,7 +2,8 @@ with Elemental.Page;
 with Elemental.PageReader;
 with Input_Sources.File;
 with Ada.Text_IO;
-with Ada.Strings.Unbounded;
+with Ada.Characters.Latin_1;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO.Unbounded_IO;
 with Ada.IO_Exceptions;
 
@@ -26,6 +27,7 @@ procedure Test is
          begin
             Line := UI.Get_Line (File);
             UB.Append (Result, Line);
+            UB.Append (Result, Ada.Characters.Latin_1.LF);
          exception
             when EI.End_Error => exit;
          end;
@@ -48,8 +50,19 @@ procedure Test is
       Output := Elemental.Page.To_Html (Reader.Page);
       Expects := Get_Expected (Html);
 
-      pragma Assert (UB."=" (Output, Expects));
+      if Output /= Expects then
+         IO.Put_Line ("TEST FAIL: " & Xml);
+         IO.Put_Line
+            ("GOT: " & Ada.Characters.Latin_1.LF &
+            "{{{" & To_String (Output) & "}}}");
+         IO.Put_Line
+            ("EXPECTED: " & Ada.Characters.Latin_1.LF &
+            "{{{" & To_String (Expects) & "}}}");
+      end if;
+
+      pragma Assert (Output = Expects);
    end Do_Test;
 begin
    Do_Test ("test/basic.xml", "test/expects/basic.html");
+   Do_Test ("test/transclude.xml", "test/expects/transclude.html");
 end Test;
