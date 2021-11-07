@@ -65,4 +65,5 @@ procedure Test is
 begin
    Do_Test ("test/basic.xml", "test/expects/basic.html");
    Do_Test ("test/transclude.xml", "test/expects/transclude.html");
+   Do_Test ("test/mixed.xml", "test/expects/mixed.html");
 end Test;

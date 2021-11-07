@@ -3,6 +3,8 @@ with Sax.Attributes;
 with Ada.Text_IO;
 with Elemental.Data;
 with Ada.Text_IO.Unbounded_IO;
+with Ada.Strings.Maps;
+with Ada.Characters.Latin_1;
 
 package body Elemental.PageReader is
    overriding
@@ -28,9 +30,17 @@ package body Elemental.PageReader is
        Ch         : Unicode.CES.Byte_Sequence)
    is
       Fragment    : Elemental.Page.Fragment (Elemental.Page.Raw);
+      Set         : Ada.Strings.Maps.Character_Set;
    begin
+      Set := Ada.Strings.Maps.To_Set
+         (Ada.Characters.Latin_1.Space &
+          Ada.Characters.Latin_1.VT &
+          Ada.Characters.Latin_1.LF &
+          Ada.Characters.Latin_1.CR);
       Fragment.Content :=
-         UB.Trim (UB.To_Unbounded_String (Ch), Ada.Strings.Both);
+         UB.Trim (UB.To_Unbounded_String (Ch),
+         Set,
+         Set);
 
       Handler.Page.Fragments.Append (Fragment);
    end Characters;

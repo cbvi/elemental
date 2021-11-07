@@ -22,9 +22,11 @@ package body Elemental.Page is
       UB.Append (Buffer, Page.Title);
       UB.Append (Buffer, "</title>");
       UB.Append (Buffer, "</head><body>");
+      UB.Append (Buffer, Ada.Characters.Latin_1.LF);
 
       for I of Page.Fragments loop
          UB.Append (Buffer, Fragment_To_String (I));
+         UB.Append (Buffer, Ada.Characters.Latin_1.LF);
       end loop;
 
       UB.Append (Buffer, "</body></html>");
