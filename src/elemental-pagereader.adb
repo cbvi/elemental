@@ -48,10 +48,10 @@ package body Elemental.PageReader is
    procedure End_Document
       (Handler    : in out Reader)
    is
-      Html : UB.Unbounded_String;
+      --  Html : UB.Unbounded_String;
    begin
-      Html := Elemental.Page.To_Html (Handler.Page);
-      Ada.Text_IO.Unbounded_IO.Put_Line (Html);
+      --  Html := Elemental.Page.To_Html (Handler.Page);
+      null;
    end End_Document;
 
 begin

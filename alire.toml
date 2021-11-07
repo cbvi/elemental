@@ -6,6 +6,6 @@ authors = ["Carlin Bingham"]
 maintainers = ["Carlin Bingham <cb@viennan.net>"]
 maintainers-logins = ["cbvi"]
 
-executables = ["main"]
+executables = ["main", "test"]
 [[depends-on]]  # Added by alr
 xmlada = "^22.0.0"  # Added by alr
