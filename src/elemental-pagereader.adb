@@ -26,8 +26,12 @@ package body Elemental.PageReader is
       (Handler    : in out Reader;
        Ch         : Unicode.CES.Byte_Sequence)
    is
+      Fragment    : Elemental.Page.Fragment;
    begin
-      UB.Append (Handler.Page.Content, Ch);
+      Fragment.What := Elemental.Page.Text;
+      Fragment.Content := UB.To_Unbounded_String (Ch);
+
+      Handler.Page.Fragments.Append (Fragment);
    end Characters;
 
    procedure End_Element
