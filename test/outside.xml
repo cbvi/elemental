@@ -1,0 +1,7 @@
+<Page title="Page with text outside Text tags">
+    <Content>
+        <Text>Hello world</Text>
+        Hello world
+        <Text>Goodbye world</Text>
+    </Content>
+</Page>

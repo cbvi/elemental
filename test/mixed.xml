@@ -1,13 +1,13 @@
 <Page title="Page with mixed content and transclusions">
    <Content>
-      Hello world:
+      <Text>Hello world:</Text>
 
       <Fragment source="test/transclude.adb" />
 
-      Example above
+      <Text>Example above</Text>
 
       <Fragment source="test/mixed.txt" />
 
-      More text
+      <Text>More text</Text>
    </Content>
 </Page>

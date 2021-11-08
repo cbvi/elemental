@@ -9,8 +9,11 @@ package Elemental.PageReader is
 
    package UB renames Ada.Strings.Unbounded;
 
+   Page_Error : exception;
+
    type Reader is new Sax.Readers.Sax_Reader with record
       In_Content  : Boolean;
+      In_Text     : Boolean := False;
       Page        : Elemental.Page.Page;
    end record;
 

@@ -7,6 +7,8 @@ with Ada.Strings.Maps;
 with Ada.Characters.Latin_1;
 
 package body Elemental.PageReader is
+   package L1 renames Ada.Characters.Latin_1;
+
    overriding
    procedure Start_Element
       (Handler    : in out Reader;
@@ -19,6 +21,8 @@ package body Elemental.PageReader is
          Handler.Page.Title := Elemental.Data.Get_Title (Handler, Atts);
       elsif Local_Name = "Content" then
          Handler.In_Content := True;
+      elsif Local_Name = "Text" then
+         Handler.In_Text := True;
       elsif Local_Name = "Fragment" then
          Elemental.Data.Process_Fragment (Handler, Atts);
       end if;
@@ -30,17 +34,14 @@ package body Elemental.PageReader is
        Ch         : Unicode.CES.Byte_Sequence)
    is
       Fragment    : Elemental.Page.Fragment (Elemental.Page.Raw);
-      Set         : Ada.Strings.Maps.Character_Set;
+      Set         : constant Ada.Strings.Maps.Character_Set :=
+                     Ada.Strings.Maps.To_Set (L1.Space & L1.VT & L1.LF & L1.CR);
    begin
-      Set := Ada.Strings.Maps.To_Set
-         (Ada.Characters.Latin_1.Space &
-          Ada.Characters.Latin_1.VT &
-          Ada.Characters.Latin_1.LF &
-          Ada.Characters.Latin_1.CR);
-      Fragment.Content :=
-         UB.Trim (UB.To_Unbounded_String (Ch),
-         Set,
-         Set);
+      if not Handler.In_Text then
+         raise Page_Error with "Characters outside of <Text>";
+      end if;
+
+      Fragment.Content := UB.Trim (UB.To_Unbounded_String (Ch), Set, Set);
 
       Handler.Page.Fragments.Append (Fragment);
    end Characters;
@@ -52,7 +53,9 @@ package body Elemental.PageReader is
        Local_Name : Sax.Symbols.Symbol)
    is
    begin
-      null;
+      if Local_Name = "Text" then
+         Handler.In_Text := False;
+      end if;
    end End_Element;
 
    overriding
