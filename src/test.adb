@@ -7,7 +7,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO.Unbounded_IO;
 with Ada.IO_Exceptions;
 with Ada.Exceptions;
-with Ada.Characters.Handling;
+with Ada.Command_Line;
 
 procedure Test is
    package IO renames Ada.Text_IO;
@@ -16,9 +16,26 @@ procedure Test is
    package EI renames Ada.IO_Exceptions;
    package EX renames Ada.Exceptions;
 
+   Started : Integer := 0;
+   Finished : Integer := 0;
+
    procedure Do_Test (Xml : String; Html : String);
    function Get_Expected (Name : String) return UB.Unbounded_String;
    procedure Dies_Ok (Xml : String; Message : String);
+   procedure Start_Test;
+   procedure End_Test;
+
+   procedure Start_Test is
+   begin
+      Started := Started + 1;
+      IO.Put (Integer'Image (Started) & " ... ");
+   end Start_Test;
+
+   procedure End_Test is
+   begin
+      Finished := Finished + 1;
+      IO.Put_Line ("ok");
+   end End_Test;
 
    function Get_Expected (Name : String) return UB.Unbounded_String
    is
@@ -47,6 +64,8 @@ procedure Test is
       Output   : UB.Unbounded_String;
       Expects  : UB.Unbounded_String;
    begin
+      Start_Test;
+
       Input_Sources.File.Open (Xml, File);
       Elemental.PageReader.Parse (Reader, File);
       Input_Sources.File.Close (File);
@@ -65,6 +84,8 @@ procedure Test is
       end if;
 
       pragma Assert (Output = Expects);
+
+      End_Test;
    end Do_Test;
 
    procedure Dies_Ok (Xml : String; Message : String)
@@ -73,6 +94,7 @@ procedure Test is
       File     : Input_Sources.File.File_Input;
       Died     : Boolean := False;
    begin
+      Start_Test;
       Input_Sources.File.Open (Xml, File);
 
       begin
@@ -88,6 +110,7 @@ procedure Test is
       Input_Sources.File.Close (File);
 
       pragma Assert (Died);
+      End_Test;
    end Dies_Ok;
 begin
    Do_Test ("test/basic.xml", "test/expects/basic.html");
@@ -98,4 +121,10 @@ begin
    Dies_Ok ("test/stray-fragment.xml", "Fragment must be in <Content>");
    Dies_Ok ("test/stray-page.xml", "Must have only one <Page> element");
    Dies_Ok ("test/not-page.xml", "Root element must be <Page>");
+
+   if Finished = Started then
+      Ada.Command_Line.Set_Exit_Status (0);
+   else
+      Ada.Command_Line.Set_Exit_Status (1);
+   end if;
 end Test;
