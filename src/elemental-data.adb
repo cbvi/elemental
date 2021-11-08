@@ -1,16 +1,7 @@
 with Sax.Symbols;
-with Sax.Attributes;
-with Ada.Text_IO.Unbounded_IO;
-with Ada.Text_IO;
-with Ada.IO_Exceptions;
-with Ada.Characters.Latin_1;
-with Ada.Containers.Indefinite_Vectors;
 with Elemental.Page;
 
 package body Elemental.Data is
-   package WO renames Ada.Text_IO;
-   package EI renames Ada.IO_Exceptions;
-   package UI renames Ada.Text_IO.Unbounded_IO;
 
    function Get_Title
       (Handler    : in out Elemental.PageReader.Reader;

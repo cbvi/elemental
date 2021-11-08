@@ -1,8 +1,5 @@
 with Sax.Symbols; use Sax.Symbols;
-with Sax.Attributes;
-with Ada.Text_IO;
 with Elemental.Data;
-with Ada.Text_IO.Unbounded_IO;
 with Ada.Strings.Maps;
 with Ada.Characters.Latin_1;
 
