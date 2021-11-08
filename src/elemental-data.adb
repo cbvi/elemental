@@ -11,8 +11,13 @@ package body Elemental.Data is
       Index : Integer;
    begin
       Index := Sax.Readers.Get_Index (Handler, Atts, "", "title");
-      return UB.To_Unbounded_String
-         (Sax.Symbols.Get (Sax.Readers.Get_Value (Atts, Index)).all);
+
+      if Index /= -1 then
+         return UB.To_Unbounded_String
+           (Sax.Symbols.Get (Sax.Readers.Get_Value (Atts, Index)).all);
+      else
+         raise Elemental.PageReader.Page_Error with "Page must have title";
+      end if;
    end Get_Title;
 
    procedure Process_Fragment
@@ -24,9 +29,13 @@ package body Elemental.Data is
       Fragment : Elemental.Page.Fragment (Elemental.Page.Text);
    begin
       Index := Sax.Readers.Get_Index (Handler, Atts, "", "source");
-      Name := UB.To_Unbounded_String
-         (Sax.Symbols.Get (Sax.Readers.Get_Value (Atts, Index)).all);
-      Fragment.Source := Name;
-      Handler.Page.Fragments.Append (Fragment);
+      if Index /= -1 then
+         Name := UB.To_Unbounded_String
+           (Sax.Symbols.Get (Sax.Readers.Get_Value (Atts, Index)).all);
+         Fragment.Source := Name;
+         Handler.Page.Fragments.Append (Fragment);
+      else
+         raise Elemental.PageReader.Page_Error with "Fragment must have source";
+      end if;
    end Process_Fragment;
 end Elemental.Data;

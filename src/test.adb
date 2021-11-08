@@ -121,6 +121,8 @@ begin
    Dies_Ok ("test/stray-fragment.xml", "Fragment must be in <Content>");
    Dies_Ok ("test/stray-page.xml", "Must have only one <Page> element");
    Dies_Ok ("test/not-page.xml", "Root element must be <Page>");
+   Dies_Ok ("test/notitle.xml", "Page must have title");
+   Dies_Ok ("test/nosource.xml", "Fragment must have source");
 
    if Finished = Started then
       Ada.Command_Line.Set_Exit_Status (0);

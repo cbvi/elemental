@@ -1,0 +1,6 @@
+<Page title="Fragment with no source">
+    <Content>
+        <Text>Hello world</Text>
+        <Fragment />
+    </Content>
+</Page>
