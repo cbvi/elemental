@@ -1,5 +1,6 @@
 with Sax.Symbols;
 with Elemental.Page;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 package body Elemental.Data is
 
@@ -26,16 +27,33 @@ package body Elemental.Data is
    is
       Index    : Integer;
       Name     : UB.Unbounded_String;
-      Fragment : Elemental.Page.Fragment (Elemental.Page.Text);
+      Fragment : Elemental.Page.Fragment (Elemental.Page.External);
    begin
       Index := Sax.Readers.Get_Index (Handler, Atts, "", "source");
       if Index /= -1 then
          Name := UB.To_Unbounded_String
            (Sax.Symbols.Get (Sax.Readers.Get_Value (Atts, Index)).all);
          Fragment.Source := Name;
-         Handler.Page.Fragments.Append (Fragment);
       else
          raise Elemental.PageReader.Page_Error with "Fragment must have source";
       end if;
+
+      Index := Sax.Readers.Get_Index (Handler, Atts, "", "type");
+      if Index /= -1 then
+         Name := UB.To_Unbounded_String
+           (Sax.Symbols.Get (Sax.Readers.Get_Value (Atts, Index)).all);
+
+         if Name = "code" then
+            Fragment.What := Elemental.Page.Code;
+         elsif Name = "html" then
+            Fragment.What := Elemental.Page.Html;
+         else
+            Fragment.What := Elemental.Page.Text;
+         end if;
+      else
+         Fragment.What := Elemental.Page.Text;
+      end if;
+
+      Handler.Page.Fragments.Append (Fragment);
    end Process_Fragment;
 end Elemental.Data;

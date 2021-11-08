@@ -37,9 +37,9 @@ package body Elemental.Page is
    function Fragment_To_String (Frag : Fragment) return UB.Unbounded_String
    is
    begin
-      case Frag.What is
-         when Raw => return Frag.Content;
-         when others => return Get_External_Fragment (Frag);
+      case Frag.Where is
+         when Local => return Frag.Content;
+         when External => return Get_External_Fragment (Frag);
       end case;
    end Fragment_To_String;
 

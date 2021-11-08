@@ -46,7 +46,7 @@ package body Elemental.PageReader is
       (Handler    : in out Reader;
        Ch         : Unicode.CES.Byte_Sequence)
    is
-      Fragment    : Elemental.Page.Fragment (Elemental.Page.Raw);
+      Fragment    : Elemental.Page.Fragment (Elemental.Page.Local);
       Set         : constant Ada.Strings.Maps.Character_Set :=
                      Ada.Strings.Maps.To_Set (L1.Space & L1.VT & L1.LF & L1.CR);
    begin

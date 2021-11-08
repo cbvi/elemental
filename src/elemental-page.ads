@@ -4,13 +4,15 @@ with Ada.Containers.Indefinite_Vectors;
 package Elemental.Page is
    package UB renames Ada.Strings.Unbounded;
 
-   type Fragment_Type is (Raw, Text, Code, Html);
+   type Fragment_Type is (Text, Code, Html);
+   type Fragment_Place is (Local, External);
 
-   type Fragment (What : Fragment_Type) is record
-      case What is
-         when Text | Code | Html =>
+   type Fragment (Where : Fragment_Place) is record
+      What : Fragment_Type;
+      case Where is
+         when External =>
             Source   : UB.Unbounded_String;
-         when Raw =>
+         when Local =>
             Content  : UB.Unbounded_String;
       end case;
    end record;
