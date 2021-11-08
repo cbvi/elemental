@@ -12,7 +12,8 @@ package Elemental.PageReader is
    Page_Error : exception;
 
    type Reader is new Sax.Readers.Sax_Reader with record
-      In_Content  : Boolean;
+      In_Page     : Boolean := False;
+      In_Content  : Boolean := False;
       In_Text     : Boolean := False;
       Page        : Elemental.Page.Page;
    end record;

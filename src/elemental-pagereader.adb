@@ -17,15 +17,31 @@ package body Elemental.PageReader is
        Atts       : Sax.Readers.Sax_Attribute_List)
    is
    begin
-      if Local_Name = "Page" then
-         Handler.Page.Title := Elemental.Data.Get_Title (Handler, Atts);
-      elsif Local_Name = "Content" then
-         Handler.In_Content := True;
-      elsif Local_Name = "Text" then
-         Handler.In_Text := True;
-      elsif Local_Name = "Fragment" then
-         Elemental.Data.Process_Fragment (Handler, Atts);
-      end if;
+      case Handler.In_Page is
+         when True =>
+            if Local_Name = "Content" then
+               Handler.In_Content := True;
+            elsif Local_Name = "Text" then
+               if not Handler.In_Content then
+                  raise Page_Error with "Text must be in <Content>";
+               end if;
+               Handler.In_Text := True;
+            elsif Local_Name = "Fragment" then
+               if not Handler.In_Content then
+                  raise Page_Error with "Fragment must be in <Content>";
+               end if;
+               Elemental.Data.Process_Fragment (Handler, Atts);
+            elsif Local_Name = "Page" then
+               raise Page_Error with "Must have only one <Page> element";
+            end if;
+         when False =>
+            if Local_Name = "Page" then
+               Handler.Page.Title := Elemental.Data.Get_Title (Handler, Atts);
+               Handler.In_Page := True;
+            else
+               raise Page_Error with "Root element must be <Page>";
+            end if;
+      end case;
    end Start_Element;
 
    overriding
@@ -55,6 +71,10 @@ package body Elemental.PageReader is
    begin
       if Local_Name = "Text" then
          Handler.In_Text := False;
+      elsif Local_Name = "Content" then
+         Handler.In_Content := False;
+      elsif Local_Name = "Page" then
+         Handler.In_Page := False;
       end if;
    end End_Element;
 

@@ -18,7 +18,7 @@ procedure Test is
 
    procedure Do_Test (Xml : String; Html : String);
    function Get_Expected (Name : String) return UB.Unbounded_String;
-   procedure Dies_Ok (Xml : String; Name : String);
+   procedure Dies_Ok (Xml : String; Message : String);
 
    function Get_Expected (Name : String) return UB.Unbounded_String
    is
@@ -67,7 +67,7 @@ procedure Test is
       pragma Assert (Output = Expects);
    end Do_Test;
 
-   procedure Dies_Ok (Xml : String; Name : String)
+   procedure Dies_Ok (Xml : String; Message : String)
    is
       Reader   : Elemental.PageReader.Reader;
       File     : Input_Sources.File.File_Input;
@@ -79,9 +79,10 @@ procedure Test is
          Elemental.PageReader.Parse (Reader, File);
       exception
          when E : others =>
-            if EX.Exception_Name (E) = Ada.Characters.Handling.To_Upper (Name)
-            then
+            if EX.Exception_Message (E) = Message then
                Died := True;
+            else
+               EX.Reraise_Occurrence (E);
             end if;
       end;
       Input_Sources.File.Close (File);
@@ -92,5 +93,9 @@ begin
    Do_Test ("test/basic.xml", "test/expects/basic.html");
    Do_Test ("test/transclude.xml", "test/expects/transclude.html");
    Do_Test ("test/mixed.xml", "test/expects/mixed.html");
-   Dies_Ok ("test/outside.xml", "Elemental.PageReader.Page_Error");
+   Dies_Ok ("test/outside.xml", "Characters outside of <Text>");
+   Dies_Ok ("test/stray-text.xml", "Text must be in <Content>");
+   Dies_Ok ("test/stray-fragment.xml", "Fragment must be in <Content>");
+   Dies_Ok ("test/stray-page.xml", "Must have only one <Page> element");
+   Dies_Ok ("test/not-page.xml", "Root element must be <Page>");
 end Test;
