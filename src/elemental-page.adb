@@ -13,6 +13,23 @@ package body Elemental.Page is
       "<html><head>"                   &
       "<meta charset=""UTF-8"" />";
 
+   function Format_Content
+     (Content : UB.Unbounded_String;
+      What : Elemental.Page.Fragment_Type)
+      return UB.Unbounded_String
+   is
+      use Ada.Strings.Unbounded; --  need & operator
+   begin
+      case What is
+         when Code =>
+            return "<code><pre>" & Content & "</pre></code>";
+         when Html =>
+            return "<div>" & Content & "</div>";
+         when Text =>
+            return Content;
+      end case;
+   end Format_Content;
+
    function To_Html (Page : Elemental.Page.Page) return UB.Unbounded_String
    is
       Buffer : UB.Unbounded_String := UB.Null_Unbounded_String;
@@ -38,8 +55,10 @@ package body Elemental.Page is
    is
    begin
       case Frag.Where is
-         when Local => return Frag.Content;
-         when External => return Get_External_Fragment (Frag);
+         when Local =>
+            return Format_Content (Frag.Content, Frag.What);
+         when External =>
+            return Format_Content (Get_External_Fragment (Frag), Frag.What);
       end case;
    end Fragment_To_String;
 

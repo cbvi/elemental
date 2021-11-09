@@ -116,6 +116,8 @@ begin
    Do_Test ("test/basic.xml", "test/expects/basic.html");
    Do_Test ("test/transclude.xml", "test/expects/transclude.html");
    Do_Test ("test/mixed.xml", "test/expects/mixed.html");
+   Do_Test ("test/fragment-type.xml", "test/expects/fragment-type.html");
+
    Dies_Ok ("test/outside.xml", "Characters outside of <Text>");
    Dies_Ok ("test/stray-text.xml", "Text must be in <Content>");
    Dies_Ok ("test/stray-fragment.xml", "Fragment must be in <Content>");

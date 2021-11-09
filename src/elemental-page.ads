@@ -8,7 +8,7 @@ package Elemental.Page is
    type Fragment_Place is (Local, External);
 
    type Fragment (Where : Fragment_Place) is record
-      What : Fragment_Type;
+      What : Fragment_Type := Text;
       case Where is
          when External =>
             Source   : UB.Unbounded_String;
@@ -25,6 +25,11 @@ package Elemental.Page is
       Title       : UB.Unbounded_String;
       Fragments   : Fragment_Vector.Vector;
    end record;
+
+   function Format_Content
+     (Content : UB.Unbounded_String;
+      What : Elemental.Page.Fragment_Type)
+      return UB.Unbounded_String;
 
    function To_Html
       (Page : Elemental.Page.Page) return UB.Unbounded_String;
