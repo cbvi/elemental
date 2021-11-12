@@ -2,6 +2,6 @@
 	<Content>
       <Text>😅</Text>
 
-      <Fragment source="test/unicode.txt" />
+      <Fragment source="test/outset/unicode.txt" />
 	</Content>
 </Page>

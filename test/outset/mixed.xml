@@ -2,11 +2,11 @@
    <Content>
       <Text>Hello world:</Text>
 
-      <Fragment source="test/transclude.adb" />
+      <Fragment source="test/outset/transclude.adb" />
 
       <Text>Example above</Text>
 
-      <Fragment source="test/mixed.txt" />
+      <Fragment source="test/outset/mixed.txt" />
 
       <Text>More text</Text>
    </Content>

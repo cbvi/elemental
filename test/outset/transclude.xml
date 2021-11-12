@@ -2,6 +2,6 @@
    <Content>
       <Text>Hello world:</Text>
 
-      <Fragment source="test/transclude.adb" />
+      <Fragment source="test/outset/transclude.adb" />
    </Content>
 </Page>

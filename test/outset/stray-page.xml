@@ -1,6 +1,6 @@
 <Page title="Page with extra Page element">
    <Content><Text>Hello world</Text>
       <Page title="oops" />
-      <Fragment Source="test/mixed.txt" />
+      <Fragment Source="test/outset/mixed.txt" />
    </Content>
 </Page>

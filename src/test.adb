@@ -113,23 +113,26 @@ procedure Test is
       End_Test;
    end Dies_Ok;
 
-   T1 : constant String := "test/template.html";
-   TB : constant String := "test/badtemplate.html";
+   T1 : constant String := "test/outset/template.html";
+   TB : constant String := "test/badhtml/badtemplate.html";
 begin
-   Do_Test ("test/basic.xml", "test/expects/basic.html", T1);
-   Do_Test ("test/transclude.xml", "test/expects/transclude.html", T1);
-   Do_Test ("test/mixed.xml", "test/expects/mixed.html", T1);
-   Do_Test ("test/fragment-type.xml", "test/expects/fragment-type.html", T1);
+   Do_Test ("test/outset/basic.xml", "test/outset/expects/basic.html", T1);
+   Do_Test ("test/outset/transclude.xml",
+            "test/outset/expects/transclude.html", T1);
+   Do_Test ("test/outset/mixed.xml", "test/outset/expects/mixed.html", T1);
+   Do_Test ("test/outset/fragment-type.xml",
+            "test/outset/expects/fragment-type.html", T1);
 
-   Do_Test ("test/basic.xml", "test/expects/badtemplate.html", TB);
+   Do_Test ("test/outset/basic.xml",
+            "test/badhtml/expects/badtemplate.html", TB);
 
-   Dies_Ok ("test/outside.xml", "Characters outside of <Text>");
-   Dies_Ok ("test/stray-text.xml", "Text must be in <Content>");
-   Dies_Ok ("test/stray-fragment.xml", "Fragment must be in <Content>");
-   Dies_Ok ("test/stray-page.xml", "Must have only one <Page> element");
-   Dies_Ok ("test/not-page.xml", "Root element must be <Page>");
-   Dies_Ok ("test/notitle.xml", "Page must have title");
-   Dies_Ok ("test/nosource.xml", "Fragment must have source");
+   Dies_Ok ("test/outset/outside.xml", "Characters outside of <Text>");
+   Dies_Ok ("test/outset/stray-text.xml", "Text must be in <Content>");
+   Dies_Ok ("test/outset/stray-fragment.xml", "Fragment must be in <Content>");
+   Dies_Ok ("test/outset/stray-page.xml", "Must have only one <Page> element");
+   Dies_Ok ("test/outset/not-page.xml", "Root element must be <Page>");
+   Dies_Ok ("test/outset/notitle.xml", "Page must have title");
+   Dies_Ok ("test/outset/nosource.xml", "Fragment must have source");
 
    if Finished = Started then
       Ada.Command_Line.Set_Exit_Status (0);

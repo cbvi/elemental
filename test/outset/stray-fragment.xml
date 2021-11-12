@@ -1,4 +1,4 @@
 <Page title="Page with Fragment outside Content tags">
    <Content><Text>Hello world</Text></Content>
-   <Fragment Source="test/mixed.txt" />
+   <Fragment Source="test/outset/mixed.txt" />
 </Page>
