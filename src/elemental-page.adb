@@ -8,6 +8,7 @@ package body Elemental.Page is
    package IO renames Ada.Text_IO;
    package UI renames Ada.Text_IO.Unbounded_IO;
    package EI renames Ada.IO_Exceptions;
+   package SF renames Ada.Strings.Fixed;
 
    Prefix : constant String := "{{@@";
    Suffix : constant String := "@@}}";
@@ -40,8 +41,8 @@ package body Elemental.Page is
       Stop   : Positive)
       return String
    is
-      Result : constant String := Ada.Strings.Fixed.Trim
-        (UB.Slice (Buffer, Start, Stop), Ada.Strings.Both);
+      Result : constant String :=
+        SF.Trim (UB.Slice (Buffer, Start, Stop), Ada.Strings.Both);
    begin
       return Result;
    end Extract_Tag;
@@ -86,7 +87,12 @@ package body Elemental.Page is
                   By => Map (Item));
                From := Start + String'(Map (Item))'Length;
             else
-               From := Stop + Suffix'Length;
+               if SF.Index (Source => Tag, Pattern => Prefix) /= 0 then
+                  raise Template_Error with "runaway tag: " & Tag;
+               else
+                  raise Template_Error
+                    with "nonexistent tag: {{@@ " & Tag & " @@}}";
+               end if;
             end if;
          end;
       end loop;
