@@ -159,6 +159,8 @@ begin
               "opening {{@@ has no closing @@}}");
    Dies_Html ("test/badhtml/badtag.html",
               "opening {{@@ has no closing @@}}");
+   Do_Test ("test/badhtml/tests.xml", "test/badhtml/expects/none.html",
+            "test/badhtml/none.html");
 
    Dies_Ok ("test/outset/outside.xml", "Characters outside of <Text>");
    Dies_Ok ("test/outset/stray-text.xml", "Text must be in <Content>");
