@@ -9,6 +9,8 @@ package Elemental.Page is
    type Fragment_Type is (Text, Code, Html);
    type Fragment_Place is (Local, External);
 
+   Template_Error : exception;
+
    type Fragment (Where : Fragment_Place) is record
       What : Fragment_Type := Text;
       case Where is

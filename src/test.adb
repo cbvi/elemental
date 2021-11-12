@@ -22,6 +22,7 @@ procedure Test is
    procedure Do_Test (Xml : String; Html : String; Template : String);
    function Get_Expected (Name : String) return UB.Unbounded_String;
    procedure Dies_Ok (Xml : String; Message : String);
+   procedure Dies_Html (Template : String; Message : String);
    procedure Start_Test;
    procedure End_Test;
 
@@ -88,6 +89,38 @@ procedure Test is
       End_Test;
    end Do_Test;
 
+   procedure Dies_Html (Template : String; Message : String)
+   is
+      Reader   : Elemental.PageReader.Reader;
+      File     : Input_Sources.File.File_Input;
+      Output   : UB.Unbounded_String := UB.Null_Unbounded_String;
+      Died     : Boolean := False;
+   begin
+      Start_Test;
+
+      Input_Sources.File.Open ("test/badhtml/tests.xml", File);
+      Elemental.PageReader.Parse (Reader, File);
+      Input_Sources.File.Close (File);
+
+      begin
+         Output := Elemental.Page.To_Html (Reader.Page, Template);
+      exception
+         when E : others =>
+            if EX.Exception_Message (E) = Message then
+               Died := True;
+            else
+               EX.Reraise_Occurrence (E);
+            end if;
+      end;
+
+      Input_Sources.File.Close (File);
+
+      pragma Assert (Died);
+      pragma Assert (Output = UB.Null_Unbounded_String);
+
+      End_Test;
+   end Dies_Html;
+
    procedure Dies_Ok (Xml : String; Message : String)
    is
       Reader   : Elemental.PageReader.Reader;
@@ -114,7 +147,6 @@ procedure Test is
    end Dies_Ok;
 
    T1 : constant String := "test/outset/template.html";
-   TB : constant String := "test/badhtml/badtemplate.html";
 begin
    Do_Test ("test/outset/basic.xml", "test/outset/expects/basic.html", T1);
    Do_Test ("test/outset/transclude.xml",
@@ -123,8 +155,10 @@ begin
    Do_Test ("test/outset/fragment-type.xml",
             "test/outset/expects/fragment-type.html", T1);
 
-   Do_Test ("test/outset/basic.xml",
-            "test/badhtml/expects/badtemplate.html", TB);
+   Dies_Html ("test/badhtml/badtemplate.html",
+              "opening {{@@ has no closing @@}}");
+   Dies_Html ("test/badhtml/badtag.html",
+              "opening {{@@ has no closing @@}}");
 
    Dies_Ok ("test/outset/outside.xml", "Characters outside of <Text>");
    Dies_Ok ("test/outset/stray-text.xml", "Text must be in <Content>");

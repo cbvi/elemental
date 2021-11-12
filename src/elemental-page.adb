@@ -66,7 +66,9 @@ package body Elemental.Page is
            (Source => Buffer,
             Pattern => Suffix,
             From => Start + Prefix'Length);
-         exit when Stop = 0;
+         if Stop = 0 then
+            raise Template_Error with "opening {{@@ has no closing @@}}";
+         end if;
 
          declare
             Tag : constant String := Extract_Tag
