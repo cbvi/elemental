@@ -1,5 +1,7 @@
 with Ada.Strings.Unbounded;
 with Ada.Containers.Indefinite_Vectors;
+with Ada.Containers.Indefinite_Hashed_Maps;
+with Ada.Strings.Hash;
 
 package Elemental.Page is
    package UB renames Ada.Strings.Unbounded;
@@ -21,10 +23,31 @@ package Elemental.Page is
       (Index_Type => Natural,
        Element_Type => Fragment);
 
+   package Page_Hash is new
+     Ada.Containers.Indefinite_Hashed_Maps
+       (Key_Type => String,
+        Element_Type => String,
+        Hash => Ada.Strings.Hash,
+        Equivalent_Keys => "=");
+
    type Page is record
       Title       : UB.Unbounded_String;
       Fragments   : Fragment_Vector.Vector;
    end record;
+
+   function Read_Template
+     (Template_File : String)
+      return UB.Unbounded_String;
+
+   function Extract_Tag
+     (Buffer : UB.Unbounded_String;
+      Start  : Positive;
+      Stop   : Positive)
+      return String;
+
+   procedure Replace_Tags
+     (Buffer : in out UB.Unbounded_String;
+      Map    :        Page_Hash.Map);
 
    function Format_Content
      (Content : UB.Unbounded_String;
@@ -32,7 +55,8 @@ package Elemental.Page is
       return UB.Unbounded_String;
 
    function To_Html
-      (Page : Elemental.Page.Page) return UB.Unbounded_String;
+     (Page : Elemental.Page.Page; Template_File : String)
+      return UB.Unbounded_String;
 
    function Fragment_To_String
       (Frag : Fragment) return UB.Unbounded_String;

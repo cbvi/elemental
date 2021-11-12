@@ -16,6 +16,8 @@ procedure Test is
    package EI renames Ada.IO_Exceptions;
    package EX renames Ada.Exceptions;
 
+   Template_File : constant String := "test/template.html";
+
    Started : Integer := 0;
    Finished : Integer := 0;
 
@@ -70,7 +72,7 @@ procedure Test is
       Elemental.PageReader.Parse (Reader, File);
       Input_Sources.File.Close (File);
 
-      Output := Elemental.Page.To_Html (Reader.Page);
+      Output := Elemental.Page.To_Html (Reader.Page, Template_File);
       Expects := Get_Expected (Html);
 
       if Output /= Expects then
