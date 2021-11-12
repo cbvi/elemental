@@ -16,12 +16,10 @@ procedure Test is
    package EI renames Ada.IO_Exceptions;
    package EX renames Ada.Exceptions;
 
-   Template_File : constant String := "test/template.html";
-
    Started : Integer := 0;
    Finished : Integer := 0;
 
-   procedure Do_Test (Xml : String; Html : String);
+   procedure Do_Test (Xml : String; Html : String; Template : String);
    function Get_Expected (Name : String) return UB.Unbounded_String;
    procedure Dies_Ok (Xml : String; Message : String);
    procedure Start_Test;
@@ -59,7 +57,7 @@ procedure Test is
       return Result;
    end Get_Expected;
 
-   procedure Do_Test (Xml : String; Html : String)
+   procedure Do_Test (Xml : String; Html : String; Template : String)
    is
       Reader   : Elemental.PageReader.Reader;
       File     : Input_Sources.File.File_Input;
@@ -72,7 +70,7 @@ procedure Test is
       Elemental.PageReader.Parse (Reader, File);
       Input_Sources.File.Close (File);
 
-      Output := Elemental.Page.To_Html (Reader.Page, Template_File);
+      Output := Elemental.Page.To_Html (Reader.Page, Template);
       Expects := Get_Expected (Html);
 
       if Output /= Expects then
@@ -114,11 +112,16 @@ procedure Test is
       pragma Assert (Died);
       End_Test;
    end Dies_Ok;
+
+   T1 : constant String := "test/template.html";
+   TB : constant String := "test/badtemplate.html";
 begin
-   Do_Test ("test/basic.xml", "test/expects/basic.html");
-   Do_Test ("test/transclude.xml", "test/expects/transclude.html");
-   Do_Test ("test/mixed.xml", "test/expects/mixed.html");
-   Do_Test ("test/fragment-type.xml", "test/expects/fragment-type.html");
+   Do_Test ("test/basic.xml", "test/expects/basic.html", T1);
+   Do_Test ("test/transclude.xml", "test/expects/transclude.html", T1);
+   Do_Test ("test/mixed.xml", "test/expects/mixed.html", T1);
+   Do_Test ("test/fragment-type.xml", "test/expects/fragment-type.html", T1);
+
+   Do_Test ("test/basic.xml", "test/expects/badtemplate.html", TB);
 
    Dies_Ok ("test/outside.xml", "Characters outside of <Text>");
    Dies_Ok ("test/stray-text.xml", "Text must be in <Content>");
