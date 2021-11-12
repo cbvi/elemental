@@ -152,6 +152,7 @@ begin
    Do_Test ("test/outset/transclude.xml",
             "test/outset/expects/transclude.html", T1);
    Do_Test ("test/outset/mixed.xml", "test/outset/expects/mixed.html", T1);
+   Do_Test ("test/outset/unicode.xml", "test/outset/expects/unicode.html", T1);
    Do_Test ("test/outset/fragment-type.xml",
             "test/outset/expects/fragment-type.html", T1);
 

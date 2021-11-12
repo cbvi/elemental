@@ -1,4 +1,4 @@
-<Page title="Page with mixed content and transclusions">
+<Page title="Page with unicode fragments">
 	<Content>
       <Text>😅</Text>
 
