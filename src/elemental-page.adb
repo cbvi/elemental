@@ -15,7 +15,6 @@ package body Elemental.Page is
    Prefix : constant String := "{{@@";
    Suffix : constant String := "@@}}";
 
-   function Month_To_String (Month : Ada.Calendar.Month_Number) return String;
    function Date_To_String (Date : Ada.Calendar.Time) return String;
 
    function Read_Template (Template_File : String) return UB.Unbounded_String
@@ -147,25 +146,6 @@ package body Elemental.Page is
       return Template;
    end To_Html;
 
-   function Month_To_String (Month : Ada.Calendar.Month_Number) return String
-   is
-   begin
-      case Month is
-         when 01 => return "January";
-         when 02 => return "February";
-         when 03 => return "March";
-         when 04 => return "April";
-         when 05 => return "May";
-         when 06 => return "June";
-         when 07 => return "July";
-         when 08 => return "August";
-         when 09 => return "September";
-         when 10 => return "October";
-         when 11 => return "November";
-         when 12 => return "December";
-      end case;
-   end Month_To_String;
-
    function Fragment_To_String (Frag : Fragment) return UB.Unbounded_String
    is
    begin
@@ -182,6 +162,27 @@ package body Elemental.Page is
       package AC renames Ada.Calendar;
       package CF renames Ada.Calendar.Formatting;
       package TZ renames Ada.Calendar.Time_Zones;
+
+      function Month_To_String (Month : AC.Month_Number) return String;
+      function Month_To_String (Month : AC.Month_Number) return String
+      is
+      begin
+         case Month is
+            when 01 => return "January";
+            when 02 => return "February";
+            when 03 => return "March";
+            when 04 => return "April";
+            when 05 => return "May";
+            when 06 => return "June";
+            when 07 => return "July";
+            when 08 => return "August";
+            when 09 => return "September";
+            when 10 => return "October";
+            when 11 => return "November";
+            when 12 => return "December";
+         end case;
+      end Month_To_String;
+
       UTC : TZ.Time_Offset renames TZ.UTC_Time_Offset;
       Month_String  : constant String := Month_To_String (CF.Month (Date, UTC));
    begin
