@@ -2,6 +2,7 @@ with Ada.Strings.Unbounded;
 with Ada.Containers.Indefinite_Vectors;
 with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Strings.Hash;
+with Ada.Calendar;
 
 package Elemental.Page is
    package UB renames Ada.Strings.Unbounded;
@@ -12,7 +13,7 @@ package Elemental.Page is
    Template_Error : exception;
 
    type Fragment (Where : Fragment_Place) is record
-      What : Fragment_Type := Text;
+      What   : Fragment_Type := Text;
       case Where is
          when External =>
             Source   : UB.Unbounded_String;
@@ -32,8 +33,18 @@ package Elemental.Page is
         Hash => Ada.Strings.Hash,
         Equivalent_Keys => "=");
 
+   type Some_Date (Valid : Boolean := False) is record
+      case Valid is
+         when True =>
+            Value : Ada.Calendar.Time;
+         when False =>
+            null;
+      end case;
+   end record;
+
    type Page is record
       Title       : UB.Unbounded_String;
+      Date        : Some_Date;
       Fragments   : Fragment_Vector.Vector;
    end record;
 

@@ -1,6 +1,8 @@
 with Sax.Symbols;
-with Elemental.Page;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Calendar.Formatting;
+with Ada.Calendar;
+with Ada.Calendar.Time_Zones;
 
 package body Elemental.Data is
 
@@ -40,6 +42,29 @@ package body Elemental.Data is
          raise Elemental.PageReader.Page_Error with "Page must have title";
       end if;
    end Get_Title;
+
+   function Get_Date
+     (Handler    : in out Elemental.PageReader.Reader;
+      Atts       : Sax.Readers.Sax_Attribute_List)
+       return Elemental.Page.Some_Date
+   is
+      Time   : constant String := " 12:00:00"; --  time is unused
+      String : UB.Unbounded_String;
+      Found  : Boolean := False;
+      Date   : Elemental.Page.Some_Date (True);
+      None   : Elemental.Page.Some_Date;
+   begin
+      Get_Attribute_By_Name (Handler, Atts, "date", String, Found);
+
+      if Found then
+         Date.Value := Ada.Calendar.Formatting.Value
+           (UB.To_String (String) & Time,
+            Ada.Calendar.Time_Zones.UTC_Time_Offset);
+         return Date;
+      else
+         return None;
+      end if;
+   end Get_Date;
 
    procedure Process_Fragment
       (Handler    : in out Elemental.PageReader.Reader;

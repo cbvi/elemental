@@ -173,6 +173,10 @@ begin
    Dies_Ok ("test/outset/notitle.xml", "Page must have title");
    Dies_Ok ("test/outset/nosource.xml", "Fragment must have source");
 
+   Do_Test ("test/inset/date.xml",
+            "test/inset/expects/date.html",
+            "test/inset/date.html");
+
    if Finished = Started then
       Ada.Command_Line.Set_Exit_Status (0);
    else

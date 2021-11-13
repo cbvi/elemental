@@ -34,6 +34,7 @@ package body Elemental.PageReader is
          when False =>
             if Local_Name = "Page" then
                Handler.Page.Title := Elemental.Data.Get_Title (Handler, Atts);
+               Handler.Page.Date := Elemental.Data.Get_Date (Handler, Atts);
                Handler.In_Page := True;
             else
                raise Page_Error with "Root element must be <Page>";
