@@ -177,6 +177,10 @@ begin
             "test/inset/expects/date.html",
             "test/inset/date.html");
 
+   Do_Test ("test/inset/date.xml",
+            "test/inset/expects/beside.html",
+            "test/inset/beside.html");
+
    if Finished = Started then
       Ada.Command_Line.Set_Exit_Status (0);
    else
