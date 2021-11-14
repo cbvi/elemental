@@ -2,6 +2,7 @@ with Elemental.Page;
 with Elemental.PageReader;
 with Elemental.SettingsReader;
 with Elemental.Settings;
+with Elemental.IndexReader;
 with Input_Sources.File;
 with Ada.Text_IO;
 with Ada.Characters.Latin_1;
@@ -26,6 +27,7 @@ procedure Test is
    procedure Dies_Ok (Xml : String; Message : String);
    procedure Dies_Html (Template : String; Message : String);
    procedure Do_Settings (Xml : String; Settings : Elemental.Settings.Settings);
+   procedure Do_Index (Xml : String);
    procedure Start_Test;
    procedure End_Test;
 
@@ -142,6 +144,20 @@ procedure Test is
       End_Test;
    end Do_Settings;
 
+   procedure Do_Index (Xml : String)
+   is
+      Reader   : Elemental.IndexReader.Reader;
+      File     : Input_Sources.File.File_Input;
+   begin
+      Start_Test;
+
+      Input_Sources.File.Open (Xml, File);
+      Elemental.IndexReader.Parse (Reader, File);
+      Input_Sources.File.Close (File);
+
+      End_Test;
+   end Do_Index;
+
    procedure Dies_Ok (Xml : String; Message : String)
    is
       Reader   : Elemental.PageReader.Reader;
@@ -211,6 +227,8 @@ begin
    begin
       Do_Settings ("test/setset/settings.xml", Set1);
    end;
+
+   Do_Index ("test/setset/pages.xml");
 
    if Finished = Started then
       Ada.Command_Line.Set_Exit_Status (0);
