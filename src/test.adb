@@ -168,7 +168,6 @@ procedure Test is
    end Dies_Ok;
 
    T1 : constant String := "test/outset/template.html";
-   Set1 : Elemental.Settings.Settings;
 begin
    Do_Test ("test/outset/basic.xml", "test/outset/expects/basic.html", T1);
    Do_Test ("test/outset/transclude.xml",
@@ -203,10 +202,14 @@ begin
             "test/inset/expects/beside.html",
             "test/inset/beside.html");
 
-   Set1.Template := UB.To_Unbounded_String ("test/setset/template.html");
-   Set1.Author := UB.To_Unbounded_String ("Justin Example");
-   Set1.Pages := UB.To_Unbounded_String ("test/setset/pages.xml");
-   Do_Settings ("test/setset/settings.xml", Set1);
+   declare
+      Set1 : constant Elemental.Settings.Settings :=
+        (Template => UB.To_Unbounded_String ("test/setset/template.html"),
+         Author   => UB.To_Unbounded_String ("Justin Example"),
+         Pages    => UB.To_Unbounded_String ("test/setset/pages.xml"));
+   begin
+      Do_Settings ("test/setset/settings.xml", Set1);
+   end;
 
    if Finished = Started then
       Ada.Command_Line.Set_Exit_Status (0);
