@@ -1,5 +1,5 @@
 with Sax.Symbols; use Sax.Symbols;
-with Elemental.Data;
+with Elemental.PageReader.Utils;
 with Ada.Strings.Maps;
 with Ada.Characters.Latin_1;
 
@@ -13,6 +13,7 @@ package body Elemental.PageReader is
        Local_Name : Sax.Symbols.Symbol;
        Atts       : Sax.Readers.Sax_Attribute_List)
    is
+      package RU renames Elemental.PageReader.Utils;
    begin
       case Handler.In_Page is
          when True =>
@@ -27,14 +28,14 @@ package body Elemental.PageReader is
                if not Handler.In_Content then
                   raise Page_Error with "Fragment must be in <Content>";
                end if;
-               Elemental.Data.Process_Fragment (Handler, Atts);
+               Elemental.PageReader.Utils.Process_Fragment (Handler, Atts);
             elsif Local_Name = "Page" then
                raise Page_Error with "Must have only one <Page> element";
             end if;
          when False =>
             if Local_Name = "Page" then
-               Handler.Page.Title := Elemental.Data.Get_Title (Handler, Atts);
-               Handler.Page.Date := Elemental.Data.Get_Date (Handler, Atts);
+               Handler.Page.Title := RU.Get_Title (Handler, Atts);
+               Handler.Page.Date := RU.Get_Date (Handler, Atts);
                Handler.In_Page := True;
             else
                raise Page_Error with "Root element must be <Page>";

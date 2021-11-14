@@ -4,7 +4,7 @@ with Ada.Calendar.Formatting;
 with Ada.Calendar;
 with Ada.Calendar.Time_Zones;
 
-package body Elemental.Data is
+package body Elemental.PageReader.Utils is
 
    procedure Get_Attribute_By_Name
      (Handler : in out Elemental.PageReader.Reader;
@@ -99,4 +99,4 @@ package body Elemental.Data is
       end if;
       Handler.Page.Fragments.Append (Fragment);
    end Process_Fragment;
-end Elemental.Data;
+end Elemental.PageReader.Utils;

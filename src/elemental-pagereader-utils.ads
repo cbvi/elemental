@@ -3,7 +3,7 @@ with Ada.Strings.Unbounded;
 with Elemental.PageReader;
 with Elemental.Page;
 
-package Elemental.Data is
+package Elemental.PageReader.Utils is
    package UB renames Ada.Strings.Unbounded;
 
    procedure Get_Attribute_By_Name
@@ -26,4 +26,4 @@ package Elemental.Data is
    procedure Process_Fragment
       (Handler    : in out Elemental.PageReader.Reader;
        Atts       : Sax.Readers.Sax_Attribute_List);
-end Elemental.Data;
+end Elemental.PageReader.Utils;
