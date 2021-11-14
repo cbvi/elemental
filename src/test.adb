@@ -1,5 +1,6 @@
 with Elemental.Page;
 with Elemental.PageReader;
+with Elemental.SettingsReader;
 with Input_Sources.File;
 with Ada.Text_IO;
 with Ada.Characters.Latin_1;
@@ -23,6 +24,7 @@ procedure Test is
    function Get_Expected (Name : String) return UB.Unbounded_String;
    procedure Dies_Ok (Xml : String; Message : String);
    procedure Dies_Html (Template : String; Message : String);
+   procedure Do_Settings;
    procedure Start_Test;
    procedure End_Test;
 
@@ -121,6 +123,20 @@ procedure Test is
       End_Test;
    end Dies_Html;
 
+   procedure Do_Settings
+   is
+      Reader   : Elemental.SettingsReader.Reader;
+      File     : Input_Sources.File.File_Input;
+   begin
+      Start_Test;
+
+      Input_Sources.File.Open ("test/setset/settings.xml", File);
+      Elemental.SettingsReader.Parse (Reader, File);
+      Input_Sources.File.Close (File);
+
+      End_Test;
+   end Do_Settings;
+
    procedure Dies_Ok (Xml : String; Message : String)
    is
       Reader   : Elemental.PageReader.Reader;
@@ -180,6 +196,8 @@ begin
    Do_Test ("test/inset/date.xml",
             "test/inset/expects/beside.html",
             "test/inset/beside.html");
+
+   Do_Settings;
 
    if Finished = Started then
       Ada.Command_Line.Set_Exit_Status (0);

@@ -1,0 +1,7 @@
+<Page title="Page Two">
+   <Content>
+      <Text>Hello world</Text>
+
+      <Fragment Source="test/setset/page2.txt" />
+   </Content>
+</Page>

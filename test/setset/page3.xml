@@ -1,0 +1,9 @@
+<Page title="Page Three" date="2021-11-14">
+   <Content>
+      <Text>Hello world</Text>
+
+      <Fragment Source="test/setset/page3.fragment.html" type="html" />
+
+      <Fragment Source="test/setset/page2.txt" />
+   </Content>
+</Page>

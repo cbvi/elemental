@@ -87,6 +87,4 @@ package body Elemental.PageReader is
       null;
    end End_Document;
 
-begin
-      null;
 end Elemental.PageReader;

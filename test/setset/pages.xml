@@ -1,0 +1,5 @@
+<Pages>
+    <Page Source="test/setset/page1.xml" />
+    <Page Source="test/setset/page2.xml" />
+    <Page Source="test/setset/page3.xml" />
+</Pages>
