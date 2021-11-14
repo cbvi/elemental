@@ -206,7 +206,8 @@ begin
       Set1 : constant Elemental.Settings.Settings :=
         (Template => UB.To_Unbounded_String ("test/setset/template.html"),
          Author   => UB.To_Unbounded_String ("Justin Example"),
-         Pages    => UB.To_Unbounded_String ("test/setset/pages.xml"));
+         Pages    => UB.To_Unbounded_String ("test/setset/pages.xml"),
+         Output   => UB.To_Unbounded_String ("test/setset/output/"));
    begin
       Do_Settings ("test/setset/settings.xml", Set1);
    end;

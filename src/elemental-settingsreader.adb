@@ -55,6 +55,8 @@ package body Elemental.SettingsReader is
             Handler.Settings.Pages := Handler.Current_Value;
          elsif Handler.Current_Setting = "author" then
             Handler.Settings.Author := Handler.Current_Value;
+         elsif Handler.Current_Setting = "output" then
+            Handler.Settings.Output := Handler.Current_Value;
          else
             raise Settings_Error with
               "Unknown setting name: " & UB.To_String (Handler.Current_Setting);

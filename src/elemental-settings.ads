@@ -9,6 +9,7 @@ package Elemental.Settings is
       Template : UB.Unbounded_String := NUB;
       Author   : UB.Unbounded_String := NUB;
       Pages    : UB.Unbounded_String := NUB;
+      Output   : UB.Unbounded_String := NUB;
    end record;
 
    procedure Dummy;

@@ -2,4 +2,5 @@
     <Setting name="template">test/setset/template.html</Setting>
     <Setting name="author">Justin Example</Setting>
     <Setting name="pages">test/setset/pages.xml</Setting>
+    <Setting name="output">test/setset/output/</Setting>
 </Settings>
