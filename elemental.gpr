@@ -63,6 +63,10 @@ project Elemental is
                             "-Og"); -- No optimization
    end case;
 
+   package Builder is
+      for Executable ("main.adb") use "elemental";
+   end Builder;
+
    package Compiler is
       for Default_Switches ("Ada") use
         Compile_Checks_Switches &

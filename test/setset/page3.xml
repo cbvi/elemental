@@ -2,8 +2,8 @@
    <Content>
       <Text>Hello world</Text>
 
-      <Fragment Source="test/setset/page3.fragment.html" type="html" />
+      <Fragment source="test/setset/page3.fragment.html" type="html" />
 
-      <Fragment Source="test/setset/page2.txt" />
+      <Fragment source="test/setset/page2.txt" />
    </Content>
 </Page>
