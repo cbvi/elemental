@@ -2,11 +2,17 @@ with Sax.Readers;
 with Sax.Symbols;
 with Sax.Utils;
 with Elemental.Settings;
+with Ada.Strings.Unbounded;
 
 package Elemental.SettingsReader is
 
+   package UB renames Ada.Strings.Unbounded;
+
    type Reader is new Sax.Readers.Sax_Reader with record
-      Settings    : Elemental.Settings.Settings;
+      Settings        : Elemental.Settings.Settings;
+      In_Settings     : Boolean := False;
+      In_Setting      : Boolean := False;
+      Current_Setting : UB.Unbounded_String := UB.Null_Unbounded_String;
    end record;
 
    overriding
