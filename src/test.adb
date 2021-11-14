@@ -1,6 +1,7 @@
 with Elemental.Page;
 with Elemental.PageReader;
 with Elemental.SettingsReader;
+with Elemental.Settings;
 with Input_Sources.File;
 with Ada.Text_IO;
 with Ada.Characters.Latin_1;
@@ -24,7 +25,7 @@ procedure Test is
    function Get_Expected (Name : String) return UB.Unbounded_String;
    procedure Dies_Ok (Xml : String; Message : String);
    procedure Dies_Html (Template : String; Message : String);
-   procedure Do_Settings;
+   procedure Do_Settings (Xml : String; Settings : Elemental.Settings.Settings);
    procedure Start_Test;
    procedure End_Test;
 
@@ -123,16 +124,20 @@ procedure Test is
       End_Test;
    end Dies_Html;
 
-   procedure Do_Settings
+   procedure Do_Settings (Xml : String; Settings : Elemental.Settings.Settings)
    is
       Reader   : Elemental.SettingsReader.Reader;
       File     : Input_Sources.File.File_Input;
    begin
       Start_Test;
 
-      Input_Sources.File.Open ("test/setset/settings.xml", File);
+      Input_Sources.File.Open (Xml, File);
       Elemental.SettingsReader.Parse (Reader, File);
       Input_Sources.File.Close (File);
+
+      pragma Assert (Settings.Template = Reader.Settings.Template);
+      pragma Assert (Settings.Author = Reader.Settings.Author);
+      pragma Assert (Settings.Pages = Reader.Settings.Pages);
 
       End_Test;
    end Do_Settings;
@@ -163,6 +168,7 @@ procedure Test is
    end Dies_Ok;
 
    T1 : constant String := "test/outset/template.html";
+   Set1 : Elemental.Settings.Settings;
 begin
    Do_Test ("test/outset/basic.xml", "test/outset/expects/basic.html", T1);
    Do_Test ("test/outset/transclude.xml",
@@ -197,7 +203,10 @@ begin
             "test/inset/expects/beside.html",
             "test/inset/beside.html");
 
-   Do_Settings;
+   Set1.Template := UB.To_Unbounded_String ("test/setset/template.html");
+   Set1.Author := UB.To_Unbounded_String ("Justin Example");
+   Set1.Pages := UB.To_Unbounded_String ("test/setset/pages.xml");
+   Do_Settings ("test/setset/settings.xml", Set1);
 
    if Finished = Started then
       Ada.Command_Line.Set_Exit_Status (0);

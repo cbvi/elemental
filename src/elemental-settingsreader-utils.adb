@@ -11,6 +11,8 @@ package body Elemental.SettingsReader.Utils is
       if Index /= -1 then
          Handler.Current_Setting := UB.To_Unbounded_String
            (Sax.Symbols.Get (Sax.Readers.Get_Value (Atts, Index)).all);
+      else
+         raise Settings_Error with "Setting must have name";
       end if;
    end Process_Setting;
 

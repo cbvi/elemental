@@ -3,8 +3,6 @@ with Elemental.SettingsReader.Utils;
 
 package body Elemental.SettingsReader is
 
-   Settings_Error : exception;
-
    overriding
    procedure Start_Element
      (Handler    : in out Reader;
@@ -28,5 +26,40 @@ package body Elemental.SettingsReader is
          end if;
       end if;
    end Start_Element;
+
+   overriding
+   procedure Characters
+     (Handler    : in out Reader;
+      Ch         : Unicode.CES.Byte_Sequence)
+   is
+   begin
+      if Handler.In_Setting then
+         UB.Append (Handler.Current_Value, Ch);
+      else
+         raise Settings_Error with "Characters outside Setting";
+      end if;
+   end Characters;
+
+   overriding
+   procedure End_Element
+     (Handler    : in out Reader;
+      NS         : Sax.Utils.XML_NS;
+      Local_Name : Sax.Symbols.Symbol)
+   is
+      use UB;
+   begin
+      if Local_Name = "Setting" then
+         if Handler.Current_Setting = "template" then
+            Handler.Settings.Template := Handler.Current_Value;
+         elsif Handler.Current_Setting = "pages" then
+            Handler.Settings.Pages := Handler.Current_Value;
+         elsif Handler.Current_Setting = "author" then
+            Handler.Settings.Author := Handler.Current_Value;
+         end if;
+         Handler.In_Setting := False;
+         Handler.Current_Setting := NUB;
+         Handler.Current_Value := NUB;
+      end if;
+   end End_Element;
 
 end Elemental.SettingsReader;
