@@ -27,7 +27,9 @@ procedure Test is
    procedure Dies_Ok (Xml : String; Message : String);
    procedure Dies_Html (Template : String; Message : String);
    procedure Do_Settings (Xml : String; Settings : Elemental.Settings.Settings);
-   procedure Do_Index (Xml : String);
+   procedure Do_Index
+     (Xml : String;
+      Pages : Elemental.IndexReader.Page_Vector.Vector);
    procedure Start_Test;
    procedure End_Test;
 
@@ -144,16 +146,21 @@ procedure Test is
       End_Test;
    end Do_Settings;
 
-   procedure Do_Index (Xml : String)
+   procedure Do_Index
+     (Xml : String;
+      Pages : Elemental.IndexReader.Page_Vector.Vector)
    is
       Reader   : Elemental.IndexReader.Reader;
       File     : Input_Sources.File.File_Input;
+      use Elemental.IndexReader.Page_Vector;
    begin
       Start_Test;
 
       Input_Sources.File.Open (Xml, File);
       Elemental.IndexReader.Parse (Reader, File);
       Input_Sources.File.Close (File);
+
+      pragma Assert (Pages = Reader.Pages);
 
       End_Test;
    end Do_Index;
@@ -228,7 +235,14 @@ begin
       Do_Settings ("test/setset/settings.xml", Set1);
    end;
 
-   Do_Index ("test/setset/pages.xml");
+   declare
+      Pages : Elemental.IndexReader.Page_Vector.Vector;
+   begin
+      Pages.Append (UB.To_Unbounded_String ("test/setset/page1.xml"));
+      Pages.Append (UB.To_Unbounded_String ("test/setset/page2.xml"));
+      Pages.Append (UB.To_Unbounded_String ("test/setset/page3.xml"));
+      Do_Index ("test/setset/pages.xml", Pages);
+   end;
 
    if Finished = Started then
       Ada.Command_Line.Set_Exit_Status (0);
