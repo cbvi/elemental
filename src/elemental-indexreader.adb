@@ -1,6 +1,9 @@
 with Sax.Symbols; use Sax.Symbols;
+with Ada.Strings.Unbounded;
 
 package body Elemental.IndexReader is
+
+   package UB renames Ada.Strings.Unbounded;
 
    procedure Process_Page
      (Handler : in out Elemental.IndexReader.Reader;
@@ -20,10 +23,10 @@ package body Elemental.IndexReader is
          if Handler.In_Pages then
             Process_Page (Handler, Atts);
          else
-            raise Index_Error with "<Page> outside of <Pages>";
+            raise Elemental.Index.Index_Error with "<Page> outside of <Pages>";
          end if;
       else
-         raise Index_Error with "Unexpected tag";
+         raise Elemental.Index.Index_Error with "Unexpected tag";
       end if;
    end Start_Element;
 
@@ -33,7 +36,7 @@ package body Elemental.IndexReader is
       Ch         : Unicode.CES.Byte_Sequence)
    is
    begin
-      raise Index_Error with "Characters not expected in index";
+      raise Elemental.Index.Index_Error with "Characters not expected in index";
    end Characters;
 
    overriding
@@ -62,7 +65,7 @@ package body Elemental.IndexReader is
            (Sax.Symbols.Get (Sax.Readers.Get_Value (Atts, Index)).all);
          Handler.Pages.Append (Source);
       else
-         raise Index_Error with "Index Page must have a Source";
+         raise Elemental.Index.Index_Error with "Index Page must have a Source";
       end if;
    end Process_Page;
 

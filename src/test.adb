@@ -2,6 +2,7 @@ with Elemental.Page;
 with Elemental.PageReader;
 with Elemental.SettingsReader;
 with Elemental.Settings;
+with Elemental.Index;
 with Elemental.IndexReader;
 with Input_Sources.File;
 with Ada.Text_IO;
@@ -29,7 +30,7 @@ procedure Test is
    procedure Do_Settings (Xml : String; Settings : Elemental.Settings.Settings);
    procedure Do_Index
      (Xml : String;
-      Pages : Elemental.IndexReader.Page_Vector.Vector);
+      Pages : Elemental.Index.List);
    procedure Start_Test;
    procedure End_Test;
 
@@ -154,12 +155,13 @@ procedure Test is
    end Do_Settings;
 
    procedure Do_Index
-     (Xml : String;
-      Pages : Elemental.IndexReader.Page_Vector.Vector)
+     (Xml   : String;
+      Pages : Elemental.Index.List)
    is
       Reader   : Elemental.IndexReader.Reader;
       File     : Input_Sources.File.File_Input;
-      use Elemental.IndexReader.Page_Vector;
+      Pages2   : Elemental.Index.List;
+      use Elemental.Index.Page_Vector;
    begin
       Start_Test;
 
@@ -168,6 +170,10 @@ procedure Test is
       Input_Sources.File.Close (File);
 
       pragma Assert (Pages = Reader.Pages);
+
+      Elemental.Index.Get_Pages (Xml, Pages2);
+
+      pragma Assert (Pages2 = Reader.Pages);
 
       End_Test;
    end Do_Index;
@@ -243,7 +249,7 @@ begin
    end;
 
    declare
-      Pages : Elemental.IndexReader.Page_Vector.Vector;
+      Pages : Elemental.Index.List;
    begin
       Pages.Append (UB.To_Unbounded_String ("test/setset/page1.xml"));
       Pages.Append (UB.To_Unbounded_String ("test/setset/page2.xml"));

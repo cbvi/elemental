@@ -1,24 +1,13 @@
 with Sax.Readers;
 with Sax.Symbols;
 with Sax.Utils;
-with Ada.Strings.Unbounded;
 with Unicode.CES;
-with Ada.Containers.Indefinite_Vectors;
+with Elemental.Index;
 
 package Elemental.IndexReader is
 
-   Index_Error : exception;
-
-   package UB renames Ada.Strings.Unbounded;
-   NUB : UB.Unbounded_String renames UB.Null_Unbounded_String;
-
-   package Page_Vector is new Ada.Containers.Indefinite_Vectors
-      (Index_Type => Natural,
-       Element_Type => UB.Unbounded_String,
-       "=" => UB."=");
-
    type Reader is new Sax.Readers.Sax_Reader with record
-      Pages    : Page_Vector.Vector;
+      Pages    : Elemental.Index.List;
       In_Pages : Boolean := False;
    end record;
 
