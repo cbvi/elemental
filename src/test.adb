@@ -130,8 +130,9 @@ procedure Test is
 
    procedure Do_Settings (Xml : String; Settings : Elemental.Settings.Settings)
    is
-      Reader   : Elemental.SettingsReader.Reader;
-      File     : Input_Sources.File.File_Input;
+      Reader    : Elemental.SettingsReader.Reader;
+      File      : Input_Sources.File.File_Input;
+      Settings2 : Elemental.Settings.Settings;
    begin
       Start_Test;
 
@@ -142,6 +143,12 @@ procedure Test is
       pragma Assert (Settings.Template = Reader.Settings.Template);
       pragma Assert (Settings.Author = Reader.Settings.Author);
       pragma Assert (Settings.Pages = Reader.Settings.Pages);
+
+      Elemental.Settings.Process_Settings (Xml, Settings2);
+
+      pragma Assert (Reader.Settings.Template = Settings2.Template);
+      pragma Assert (Reader.Settings.Author = Settings2.Author);
+      pragma Assert (Reader.Settings.Pages = Settings2.Pages);
 
       End_Test;
    end Do_Settings;

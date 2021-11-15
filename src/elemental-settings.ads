@@ -12,6 +12,8 @@ package Elemental.Settings is
       Output   : UB.Unbounded_String := NUB;
    end record;
 
-   procedure Dummy;
+   procedure Process_Settings
+     (Settings_Path :        String;
+      Settings      : in out Elemental.Settings.Settings);
 
 end Elemental.Settings;
