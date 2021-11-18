@@ -11,6 +11,7 @@ package Elemental.IndexReader is
       In_Pages : Boolean := False;
    end record;
 
+private
    overriding
    procedure Start_Element
      (Handler    : in out Reader;
