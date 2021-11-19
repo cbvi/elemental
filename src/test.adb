@@ -175,6 +175,10 @@ procedure Test is
 
       pragma Assert (Pages2 = Reader.Pages);
 
+      pragma Assert
+        (Elemental.Index.Get_Target_Name
+           (UB.To_String (Reader.Pages (1))) = "page2.html");
+
       End_Test;
    end Do_Index;
 
