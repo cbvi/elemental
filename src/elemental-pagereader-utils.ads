@@ -23,6 +23,11 @@ package Elemental.PageReader.Utils is
       Atts       : Sax.Readers.Sax_Attribute_List)
       return Elemental.Page.Some_Date;
 
+   function Get_Sub
+     (Handler    : in out Elemental.PageReader.Reader;
+      Atts       : Sax.Readers.Sax_Attribute_List)
+      return UB.Unbounded_String;
+
    procedure Process_Fragment
       (Handler    : in out Elemental.PageReader.Reader;
        Atts       : Sax.Readers.Sax_Attribute_List);

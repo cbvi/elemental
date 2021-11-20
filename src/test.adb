@@ -1,5 +1,4 @@
 with Elemental.Page;
-with Elemental.PageReader;
 with Elemental.SettingsReader;
 with Elemental.Settings;
 with Elemental.Index;
@@ -68,18 +67,15 @@ procedure Test is
 
    procedure Do_Test (Xml : String; Html : String; Template : String)
    is
-      Reader   : Elemental.PageReader.Reader;
-      File     : Input_Sources.File.File_Input;
       Output   : UB.Unbounded_String;
       Expects  : UB.Unbounded_String;
+      Page     : Elemental.Page.Page;
    begin
       Start_Test;
 
-      Input_Sources.File.Open (Xml, File);
-      Elemental.PageReader.Parse (Reader, File);
-      Input_Sources.File.Close (File);
+      Page := Elemental.Page.Get_Page (Xml);
 
-      Output := Elemental.Page.To_Html (Reader.Page, Template);
+      Output := Elemental.Page.To_Html (Page, Template);
       Expects := Get_Expected (Html);
 
       if Output /= Expects then
@@ -99,19 +95,16 @@ procedure Test is
 
    procedure Dies_Html (Template : String; Message : String)
    is
-      Reader   : Elemental.PageReader.Reader;
-      File     : Input_Sources.File.File_Input;
       Output   : UB.Unbounded_String := UB.Null_Unbounded_String;
       Died     : Boolean := False;
+      Page     : Elemental.Page.Page;
    begin
       Start_Test;
 
-      Input_Sources.File.Open ("test/badhtml/tests.xml", File);
-      Elemental.PageReader.Parse (Reader, File);
-      Input_Sources.File.Close (File);
+      Page := Elemental.Page.Get_Page ("test/badhtml/tests.xml");
 
       begin
-         Output := Elemental.Page.To_Html (Reader.Page, Template);
+         Output := Elemental.Page.To_Html (Page, Template);
       exception
          when E : others =>
             if EX.Exception_Message (E) = Message then
@@ -120,8 +113,6 @@ procedure Test is
                EX.Reraise_Occurrence (E);
             end if;
       end;
-
-      Input_Sources.File.Close (File);
 
       pragma Assert (Died);
       pragma Assert (Output = UB.Null_Unbounded_String);
@@ -175,24 +166,17 @@ procedure Test is
 
       pragma Assert (Pages2 = Reader.Pages);
 
-      pragma Assert
-        (Elemental.Index.Get_Target_Name
-           (UB.To_String (Reader.Pages (1))) = "page2.html");
-
       End_Test;
    end Do_Index;
 
    procedure Dies_Ok (Xml : String; Message : String)
    is
-      Reader   : Elemental.PageReader.Reader;
-      File     : Input_Sources.File.File_Input;
       Died     : Boolean := False;
+      Page     : Elemental.Page.Page;
    begin
       Start_Test;
-      Input_Sources.File.Open (Xml, File);
-
       begin
-         Elemental.PageReader.Parse (Reader, File);
+         Page := Elemental.Page.Get_Page (Xml);
       exception
          when E : others =>
             if EX.Exception_Message (E) = Message then
@@ -201,8 +185,6 @@ procedure Test is
                EX.Reraise_Occurrence (E);
             end if;
       end;
-      Input_Sources.File.Close (File);
-
       pragma Assert (Died);
       End_Test;
    end Dies_Ok;

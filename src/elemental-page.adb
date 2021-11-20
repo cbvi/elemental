@@ -5,17 +5,35 @@ with Ada.Characters.Latin_1;
 with Ada.Strings.Fixed;
 with Ada.Calendar.Formatting;
 with Ada.Calendar.Time_Zones;
+with Ada.Directories;
+with Elemental.PageReader;
+with Input_Sources.File;
 
 package body Elemental.Page is
    package IO renames Ada.Text_IO;
    package UI renames Ada.Text_IO.Unbounded_IO;
    package EI renames Ada.IO_Exceptions;
    package SF renames Ada.Strings.Fixed;
+   package AD renames Ada.Directories;
 
    Prefix : constant String := "{{@@";
    Suffix : constant String := "@@}}";
 
    function Date_To_String (Date : Ada.Calendar.Time) return String;
+
+   function Get_Page (Page_Path : String) return Elemental.Page.Page
+   is
+      File   : Input_Sources.File.File_Input;
+      Reader : Elemental.PageReader.Reader;
+   begin
+      Input_Sources.File.Open (Page_Path, File);
+      Elemental.PageReader.Parse (Reader, File);
+      Input_Sources.File.Close (File);
+
+      Reader.Page.Path := UB.To_Unbounded_String (Page_Path);
+
+      return Reader.Page;
+   end Get_Page;
 
    function Read_Template (Template_File : String) return UB.Unbounded_String
    is
@@ -145,6 +163,19 @@ package body Elemental.Page is
 
       return Template;
    end To_Html;
+
+   function Get_Target
+     (Page : Elemental.Page.Page;
+      Path : String;
+      Settings : Elemental.Settings.Settings)
+      return String
+   is
+      Location : constant String := UB.To_String (Settings.Output) &
+        "/" & UB.To_String (Page.Sub) & "/" &
+        AD.Base_Name (Path);
+   begin
+      return Location;
+   end Get_Target;
 
    function Fragment_To_String (Frag : Fragment) return UB.Unbounded_String
    is

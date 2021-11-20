@@ -37,9 +37,4 @@ private
       (Handler    : in out Reader;
        NS         : Sax.Utils.XML_NS;
        Local_Name : Sax.Symbols.Symbol);
-
-   overriding
-   procedure End_Document
-      (Handler    : in out Reader);
-
 end Elemental.PageReader;

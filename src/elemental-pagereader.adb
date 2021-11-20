@@ -36,6 +36,7 @@ package body Elemental.PageReader is
             if Local_Name = "Page" then
                Handler.Page.Title := RU.Get_Title (Handler, Atts);
                Handler.Page.Date := RU.Get_Date (Handler, Atts);
+               Handler.Page.Sub := RU.Get_Sub (Handler, Atts);
                Handler.In_Page := True;
             else
                raise Page_Error with "Root element must be <Page>";
@@ -76,15 +77,4 @@ package body Elemental.PageReader is
          Handler.In_Page := False;
       end if;
    end End_Element;
-
-   overriding
-   procedure End_Document
-      (Handler    : in out Reader)
-   is
-      --  Html : UB.Unbounded_String;
-   begin
-      --  Html := Elemental.Page.To_Html (Handler.Page);
-      null;
-   end End_Document;
-
 end Elemental.PageReader;

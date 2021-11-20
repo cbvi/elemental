@@ -66,6 +66,23 @@ package body Elemental.PageReader.Utils is
       end if;
    end Get_Date;
 
+   function Get_Sub
+     (Handler    : in out Elemental.PageReader.Reader;
+      Atts       : Sax.Readers.Sax_Attribute_List)
+      return UB.Unbounded_String
+   is
+      Found  : Boolean := False;
+      Sub    : UB.Unbounded_String;
+   begin
+      Get_Attribute_By_Name (Handler, Atts, "sub", Sub, Found);
+
+      if Found then
+         return Sub;
+      else
+         return UB.Null_Unbounded_String;
+      end if;
+   end Get_Sub;
+
    procedure Process_Fragment
       (Handler    : in out Elemental.PageReader.Reader;
        Atts       : Sax.Readers.Sax_Attribute_List)

@@ -18,8 +18,4 @@ package Elemental.Index is
 
    procedure Get_Pages (Pages_Index : String; Pages_List : in out List);
    --  Populates the list of page files from a path to an index file.
-
-   function Get_Target_Name (Page_Path : String) return String;
-   --  Returns the target location of the page file
-
 end Elemental.Index;

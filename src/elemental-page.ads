@@ -3,6 +3,7 @@ with Ada.Containers.Indefinite_Vectors;
 with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Strings.Hash;
 with Ada.Calendar;
+with Elemental.Settings;
 
 package Elemental.Page is
    package UB renames Ada.Strings.Unbounded;
@@ -55,11 +56,16 @@ package Elemental.Page is
    --  Optional type that may contain a date value.
 
    type Page is record
+      Path        : UB.Unbounded_String;
       Title       : UB.Unbounded_String;
       Date        : Some_Date;
       Fragments   : Fragment_Vector.Vector;
+      Sub         : UB.Unbounded_String;
    end record;
    --  Type representing a page.
+
+   function Get_Page (Page_Path : String) return Elemental.Page.Page;
+   --  Creates a Page from the file at the given path.
 
    function To_Html
      (Page : Elemental.Page.Page; Template_File : String)
@@ -67,6 +73,13 @@ package Elemental.Page is
    --  Given a page object and a path to a template file, replaces the tags in
    --  the template file based on data from the page object and returns the
    --  the resulting HTML as a string.
+
+   function Get_Target
+     (Page : Elemental.Page.Page;
+      Path : String;
+      Settings : Elemental.Settings.Settings)
+      return String;
+   --  Returns the target location of the page.
 
 private
    function Read_Template
