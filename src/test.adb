@@ -187,7 +187,13 @@ procedure Test is
    begin
       Start_Test;
       Elemental.Settings.Process_Settings (Xml, Settings);
-      Ada.Directories.Delete_Tree (UB.To_String (Settings.Output));
+      begin
+         Ada.Directories.Delete_Tree (UB.To_String (Settings.Output));
+      exception
+         when EI.Name_Error =>
+            --  raised if the tests haven't been run before
+            null;
+      end;
       Elemental.Index.Get_Pages (UB.To_String (Settings.Pages), Index);
 
       for S of Index loop
