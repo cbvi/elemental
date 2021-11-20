@@ -2,4 +2,8 @@
     <Page Source="test/setset/page1.xml" />
     <Page Source="test/setset/page2.xml" />
     <Page Source="test/setset/page3.xml" />
+    <Page Source="test/setset/page4.xml" />
+    <Page Source="test/setset/subdir/page1.xml" />
+    <Page Source="test/setset/subdir/page2.xml" />
+    <Page Source="test/setset/subdir/page9.xml" />
 </Pages>

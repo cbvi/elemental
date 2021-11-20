@@ -64,6 +64,11 @@ package Elemental.Page is
    end record;
    --  Type representing a page.
 
+   procedure Transmute_Page
+     (Page : Elemental.Page.Page;
+      Settings : Elemental.Settings.Settings);
+   --  Generates a new html file
+
    function Get_Page (Page_Path : String) return Elemental.Page.Page;
    --  Creates a Page from the file at the given path.
 
@@ -79,6 +84,12 @@ package Elemental.Page is
       Settings : Elemental.Settings.Settings)
       return String;
    --  Returns the target location of the page.
+
+   function Get_Target_Directory
+     (Page     : Elemental.Page.Page;
+      Settings : Elemental.Settings.Settings)
+      return String;
+   --  Returns the directory path of the target location.
 
 private
    function Read_Template

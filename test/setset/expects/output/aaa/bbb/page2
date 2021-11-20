@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Page in a second level subdirectory</title>
+    </head>
+    <body>
+        <div>
+            <div>
+                <p>Hello world
+</p>
+            </div>
+        </div>
+    </body>
+</html>
+

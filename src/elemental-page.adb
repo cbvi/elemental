@@ -21,6 +21,21 @@ package body Elemental.Page is
 
    function Date_To_String (Date : Ada.Calendar.Time) return String;
 
+   procedure Transmute_Page
+     (Page : Elemental.Page.Page;
+      Settings : Elemental.Settings.Settings)
+   is
+      File  : IO.File_Type;
+      Path  : constant String := Elemental.Page.Get_Target (Page, Settings);
+      Html  : UB.Unbounded_String;
+   begin
+      AD.Create_Path (Get_Target_Directory (Page, Settings));
+      IO.Create (File, IO.Out_File, Path, "WCEM=8");
+      Html := Elemental.Page.To_Html (Page, UB.To_String (Settings.Template));
+      Ada.Text_IO.Put (File, UB.To_String (Html));
+      Ada.Text_IO.Close (File);
+   end Transmute_Page;
+
    function Get_Page (Page_Path : String) return Elemental.Page.Page
    is
       File   : Input_Sources.File.File_Input;
@@ -165,16 +180,26 @@ package body Elemental.Page is
    end To_Html;
 
    function Get_Target
-     (Page : Elemental.Page.Page;
+     (Page     : Elemental.Page.Page;
       Settings : Elemental.Settings.Settings)
       return String
    is
-      Location : constant String := UB.To_String (Settings.Output) &
-        "/" & UB.To_String (Page.Sub) & "/" &
+      Location : constant String := Get_Target_Directory (Page, Settings) &
         AD.Base_Name (UB.To_String (Page.Path));
    begin
       return Location;
    end Get_Target;
+
+   function Get_Target_Directory
+     (Page     : Elemental.Page.Page;
+      Settings : Elemental.Settings.Settings)
+      return String
+   is
+      Directory : constant String := UB.To_String (Settings.Output) &
+        "/" & UB.To_String (Page.Sub) & "/";
+   begin
+      return Directory;
+   end Get_Target_Directory;
 
    function Fragment_To_String (Frag : Fragment) return UB.Unbounded_String
    is

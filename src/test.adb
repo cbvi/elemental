@@ -1,3 +1,4 @@
+with Ada.Directories;
 with Elemental.Page;
 with Elemental.Settings;
 with Elemental.Index;
@@ -8,6 +9,7 @@ with Ada.Text_IO.Unbounded_IO;
 with Ada.IO_Exceptions;
 with Ada.Exceptions;
 with Ada.Command_Line;
+with Ada.Direct_IO;
 
 procedure Test is
    package IO renames Ada.Text_IO;
@@ -27,6 +29,11 @@ procedure Test is
    procedure Do_Index
      (Xml : String;
       Pages : Elemental.Index.List);
+   procedure Do_Transmute
+     (Xml     : String;
+      Output  : String;
+      Expects : String;
+      List    : Elemental.Index.List);
    procedure Start_Test;
    procedure End_Test;
 
@@ -168,6 +175,56 @@ procedure Test is
       End_Test;
    end Dies_Ok;
 
+   procedure Do_Transmute
+     (Xml     : String;
+      Output  : String;
+      Expects : String;
+      List    : Elemental.Index.List)
+   is
+      Settings : Elemental.Settings.Settings;
+      Index    : Elemental.Index.List;
+      Page     : Elemental.Page.Page;
+   begin
+      Start_Test;
+      Elemental.Settings.Process_Settings (Xml, Settings);
+      Ada.Directories.Delete_Tree (UB.To_String (Settings.Output));
+      Elemental.Index.Get_Pages (UB.To_String (Settings.Pages), Index);
+
+      for S of Index loop
+         Page := Elemental.Page.Get_Page (UB.To_String (S));
+         Elemental.Page.Transmute_Page (Page, Settings);
+      end loop;
+
+      for S of List loop
+         declare
+            Out_File : constant String := Output  & "/" & UB.To_String (S);
+            Exp_File : constant String := Expects & "/" & UB.To_String (S);
+            Size : constant Natural :=
+              Natural (Ada.Directories.Size (Out_File));
+            subtype File_String is String (1 .. Size);
+            package FIO is new Ada.Direct_IO (File_String);
+
+            Content1 : File_String;
+            File1    : FIO.File_Type;
+
+            Content2 : File_String;
+            File2    : FIO.File_Type;
+         begin
+            FIO.Open (File1, FIO.In_File, Out_File);
+            FIO.Read (File1, Content1);
+            FIO.Close (File1);
+
+            FIO.Open (File2, FIO.In_File, Exp_File);
+            FIO.Read (File2, Content2);
+            FIO.Close (File2);
+
+            pragma Assert (Content1 = Content2);
+         end;
+      end loop;
+
+      End_Test;
+   end Do_Transmute;
+
    T1 : constant String := "test/outset/template.html";
 begin
    Do_Test ("test/outset/basic.xml", "test/outset/expects/basic.html", T1);
@@ -219,7 +276,28 @@ begin
       Pages.Append (UB.To_Unbounded_String ("test/setset/page1.xml"));
       Pages.Append (UB.To_Unbounded_String ("test/setset/page2.xml"));
       Pages.Append (UB.To_Unbounded_String ("test/setset/page3.xml"));
+      Pages.Append (UB.To_Unbounded_String ("test/setset/page4.xml"));
+      Pages.Append (UB.To_Unbounded_String ("test/setset/subdir/page1.xml"));
+      Pages.Append (UB.To_Unbounded_String ("test/setset/subdir/page2.xml"));
+      Pages.Append (UB.To_Unbounded_String ("test/setset/subdir/page9.xml"));
       Do_Index ("test/setset/pages.xml", Pages);
+   end;
+
+   declare
+      List : Elemental.Index.List;
+   begin
+      List.Append (UB.To_Unbounded_String ("page1"));
+      List.Append (UB.To_Unbounded_String ("page2"));
+      List.Append (UB.To_Unbounded_String ("page3"));
+      List.Append (UB.To_Unbounded_String ("page9"));
+      List.Append (UB.To_Unbounded_String ("aaa/page1"));
+      List.Append (UB.To_Unbounded_String ("aaa/bbb/page2"));
+      List.Append (UB.To_Unbounded_String ("ccc/page4"));
+      Do_Transmute
+        ("test/setset/settings.xml",
+         "test/setset/output",
+         "test/setset/expects/output",
+         List);
    end;
 
    if Finished = Started then

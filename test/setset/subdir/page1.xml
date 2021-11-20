@@ -1,0 +1,5 @@
+<Page title="Page in a subdirectory" date="2021-11-14" sub="aaa">
+   <Content>
+      <Text>Hello world</Text>
+   </Content>
+</Page>

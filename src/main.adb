@@ -23,21 +23,6 @@ begin
 
       Ada.Text_IO.Put_Line (TS (Page.Title));
 
-      declare
-         New_File : Ada.Text_IO.File_Type;
-         New_Html : UB.Unbounded_String;
-      begin
-         Ada.Text_IO.Create
-           (New_File,
-            Ada.Text_IO.Out_File,
-            TS (Settings.Output) & TS (S) & ".html",
-            "WCEM=8");
-         New_Html := Elemental.Page.To_Html
-           (Page, TS (Settings.Template));
-         Ada.Text_IO.Put (New_File, TS (New_Html));
-         Ada.Text_IO.Close (New_File);
-      end;
-
-      Page.Fragments.Clear;
+      Elemental.Page.Transmute_Page (Page, Settings);
    end loop;
 end Main;
