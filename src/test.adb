@@ -1,9 +1,6 @@
 with Elemental.Page;
-with Elemental.SettingsReader;
 with Elemental.Settings;
 with Elemental.Index;
-with Elemental.IndexReader;
-with Input_Sources.File;
 with Ada.Text_IO;
 with Ada.Characters.Latin_1;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
@@ -122,25 +119,15 @@ procedure Test is
 
    procedure Do_Settings (Xml : String; Settings : Elemental.Settings.Settings)
    is
-      Reader    : Elemental.SettingsReader.Reader;
-      File      : Input_Sources.File.File_Input;
-      Settings2 : Elemental.Settings.Settings;
+      Settings1 : Elemental.Settings.Settings;
    begin
       Start_Test;
 
-      Input_Sources.File.Open (Xml, File);
-      Elemental.SettingsReader.Parse (Reader, File);
-      Input_Sources.File.Close (File);
+      Elemental.Settings.Process_Settings (Xml, Settings1);
 
-      pragma Assert (Settings.Template = Reader.Settings.Template);
-      pragma Assert (Settings.Author = Reader.Settings.Author);
-      pragma Assert (Settings.Pages = Reader.Settings.Pages);
-
-      Elemental.Settings.Process_Settings (Xml, Settings2);
-
-      pragma Assert (Reader.Settings.Template = Settings2.Template);
-      pragma Assert (Reader.Settings.Author = Settings2.Author);
-      pragma Assert (Reader.Settings.Pages = Settings2.Pages);
+      pragma Assert (Settings.Template = Settings1.Template);
+      pragma Assert (Settings.Author = Settings1.Author);
+      pragma Assert (Settings.Pages = Settings1.Pages);
 
       End_Test;
    end Do_Settings;
@@ -149,22 +136,14 @@ procedure Test is
      (Xml   : String;
       Pages : Elemental.Index.List)
    is
-      Reader   : Elemental.IndexReader.Reader;
-      File     : Input_Sources.File.File_Input;
       Pages2   : Elemental.Index.List;
       use Elemental.Index.Page_Vector;
    begin
       Start_Test;
 
-      Input_Sources.File.Open (Xml, File);
-      Elemental.IndexReader.Parse (Reader, File);
-      Input_Sources.File.Close (File);
-
-      pragma Assert (Pages = Reader.Pages);
-
       Elemental.Index.Get_Pages (Xml, Pages2);
 
-      pragma Assert (Pages2 = Reader.Pages);
+      pragma Assert (Pages = Pages2);
 
       End_Test;
    end Do_Index;
