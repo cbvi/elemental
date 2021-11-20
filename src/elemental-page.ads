@@ -76,7 +76,6 @@ package Elemental.Page is
 
    function Get_Target
      (Page : Elemental.Page.Page;
-      Path : String;
       Settings : Elemental.Settings.Settings)
       return String;
    --  Returns the target location of the page.

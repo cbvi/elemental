@@ -166,13 +166,12 @@ package body Elemental.Page is
 
    function Get_Target
      (Page : Elemental.Page.Page;
-      Path : String;
       Settings : Elemental.Settings.Settings)
       return String
    is
       Location : constant String := UB.To_String (Settings.Output) &
         "/" & UB.To_String (Page.Sub) & "/" &
-        AD.Base_Name (Path);
+        AD.Base_Name (UB.To_String (Page.Path));
    begin
       return Location;
    end Get_Target;
