@@ -7,6 +7,7 @@ with Ada.Text_IO;
 
 procedure Main is
    package UB renames Ada.Strings.Unbounded;
+
    function TS (S : UB.Unbounded_String)
                 return String renames UB.To_String;
 
@@ -14,7 +15,7 @@ procedure Main is
    Index       : Elemental.Index.List;
    Page        : Elemental.Page.Page;
 begin
-   Elemental.Settings.Process_Settings ("test/setset/settings.xml", Settings);
+   Elemental.Settings.Process_Settings ("settings.xml", Settings);
 
    Elemental.Index.Get_Pages (TS (Settings.Pages), Index);
 
