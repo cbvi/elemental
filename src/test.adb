@@ -158,11 +158,11 @@ procedure Test is
    procedure Dies_Ok (Xml : String; Message : String)
    is
       Died     : Boolean := False;
-      Page     : Elemental.Page.Page;
+      Unused   : Elemental.Page.Page;
    begin
       Start_Test;
       begin
-         Page := Elemental.Page.Get_Page (Xml);
+         Unused := Elemental.Page.Get_Page (Xml);
       exception
          when E : others =>
             if EX.Exception_Message (E) = Message then
