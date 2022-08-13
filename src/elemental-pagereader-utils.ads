@@ -1,6 +1,5 @@
 with Sax.Readers;
 with Ada.Strings.Unbounded;
-with Elemental.PageReader;
 with Elemental.Page;
 
 package Elemental.PageReader.Utils is
